@@ -6,7 +6,7 @@ _A modern, responsive, and feature-rich portfolio website built with vanilla HTM
 
 <p align="center">
   <a href="https://saqib-personalportfolio.netlify.app/" target="_blank">
-    <img src="https://img.shields.io/badge/Live-Preview-brightgreen?style=for-the-badge&logo=vercel">
+    <img src="https://img.shields.io/badge/Live-Preview-blue?style=for-the-badge&logo=netlify">
   </a>
 </p>
 
