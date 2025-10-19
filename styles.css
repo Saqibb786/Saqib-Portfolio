@@ -642,6 +642,25 @@ body {
     border-radius: 6px;
 }
 
+/* Remove default blue tap highlight on mobile/touch devices for interactive controls */
+@media (hover: none) and (pointer: coarse) {
+    a,
+    button,
+    .btn,
+    .theme-toggle,
+    .hamburger,
+    .nav-menu a,
+    .cert-toggle-icon,
+    .social-links a,
+    .footer-col.connect .footer-icons a,
+    .project-card,
+    .skill-tag,
+    .contact-social-btns a {
+        -webkit-tap-highlight-color: transparent;
+        outline: none;
+    }
+}
+
 
 .nav-brand {
     display: inline-flex;
@@ -1371,6 +1390,10 @@ section {
 }
 .cert-card .cert-header h4 {
     margin: 0;
+    flex: 1 1 auto;      /* let the title take remaining space and shrink */
+    min-width: 0;        /* allow flex child to shrink instead of overflowing */
+    white-space: normal; /* enable wrapping */
+    overflow-wrap: anywhere; /* wrap at slashes/long tokens if needed */
 }
 
 .cert-description {
