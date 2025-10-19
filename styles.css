@@ -1207,6 +1207,11 @@ section {
     transition: max-height 300ms ease;
 }
 
+/* Allow grid items to shrink within the grid to avoid subtle horizontal overflow */
+.certifications-grid > * {
+    min-width: 0;
+}
+
 /* Collapsed state: limit grid height to approx 3 rows and hide overflow */
 .certifications-grid.collapsed {
     /* height will be set inline by JS to exactly 3 rows; keep overflow hidden */
@@ -1341,6 +1346,7 @@ section {
     color: var(--gray-text);
     font-size: 0.9rem;
     margin-bottom: 0.5rem;
+    overflow-wrap: anywhere; /* wrap long words/URLs to avoid overflow */
 }
 
 /* Cert header: icon + title side-by-side */
@@ -1598,6 +1604,12 @@ section {
     .projects-grid,
     .certifications-grid {
         grid-template-columns: 1fr;
+    }
+
+    /* Ensure certifications grid never overflows: allow content to shrink */
+    .certifications-grid {
+        grid-template-columns: minmax(0, 1fr);
+        padding-right: 0; /* avoid fractional rounding adding a pixel on the right */
     }
 
     .education-item {
