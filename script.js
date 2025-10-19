@@ -75,7 +75,7 @@ document.querySelectorAll(".nav-menu a").forEach((link) => {
     navMenu.classList.remove("active");
     hamburger.classList.remove("active");
     hamburger.setAttribute("aria-expanded", "false");
-    
+
     // Apply the same cleanup logic as the hamburger toggle to properly close the menu
     if (navMenu && window.innerWidth <= 768) {
       navMenu.style.opacity = "0";
