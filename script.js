@@ -434,26 +434,47 @@ function computeGridRows() {
   return Math.ceil(children.length / cols);
 }
 
-function setCollapsedHeightForThreeRows() {
-  // precisely compute height for 3 rows
+function setCollapsedHeightForRows(rows) {
+  // Precisely compute collapsed height by grouping certification cards into rows
+  // and measuring the bottom of the last visible row. This prevents partial
+  // reveals when cards vary in height or gaps change across breakpoints.
   const children = Array.from(certsGrid.children).filter(
     (c) => c.classList && c.classList.contains("cert-card")
   );
   if (children.length === 0) return 0;
-  // measure first card height
-  const firstRect = children[0].getBoundingClientRect();
-  const cardHeight = firstRect.height;
-  // measure vertical gap: use offsetTop difference between first and next-row card (if exists)
-  let gap = 16; // fallback
-  if (children.length > 1) {
-    const secondRect = children[1].getBoundingClientRect();
-    gap = Math.abs(secondRect.top - firstRect.top) - cardHeight;
-    if (isNaN(gap) || gap < 0) gap = 16;
+
+  // Group children by their top coordinate to identify rows (tolerance for sub-pixel differences)
+  const rowsMap = [];
+  const TOL = 3; // pixels tolerance for grouping
+  children.forEach((c) => {
+    const r = c.getBoundingClientRect();
+    const top = Math.round(r.top);
+    let rowIndex = rowsMap.findIndex((t) => Math.abs(t - top) <= TOL);
+    if (rowIndex === -1) {
+      rowsMap.push(top);
+      rowIndex = rowsMap.length - 1;
+    }
+    c._rowIndex = rowIndex;
+  });
+
+  const targetRowIndex = Math.min(rows - 1, rowsMap.length - 1);
+  const gridRect = certsGrid.getBoundingClientRect();
+  let maxBottom = gridRect.top;
+  children.forEach((c) => {
+    if (c._rowIndex === targetRowIndex) {
+      const r = c.getBoundingClientRect();
+      if (r.bottom > maxBottom) maxBottom = r.bottom;
+    }
+  });
+
+  if (maxBottom === gridRect.top && children[0]) {
+    const r = children[0].getBoundingClientRect();
+    maxBottom = r.bottom;
   }
-  const rows = 3;
-  const total = rows * cardHeight + (rows - 1) * gap;
-  // set inline maxHeight when collapsed
-  certsGrid.style.maxHeight = `${Math.round(total)}px`;
+
+  let total = Math.ceil(maxBottom - gridRect.top);
+  total = Math.max(0, total - 1); // subtract 1px to avoid leakage due to rounding
+  certsGrid.style.maxHeight = `${total}px`;
   return total;
 }
 
@@ -464,7 +485,9 @@ function removeCollapsedHeight() {
 function updateCertToggle() {
   if (!certsGrid || !certToggle) return;
   const rows = computeGridRows();
-  if (rows > 3) {
+  // Responsive threshold: on large screens (>=1024px) collapse after 2 rows, else after 3 rows
+  const threshold = window.innerWidth >= 1024 ? 2 : 3;
+  if (rows > threshold) {
     // show toggle and set collapsed height
     // move the existing button into place right after the grid (in case it
     // started inside a different wrapper). This preserves listeners.
@@ -478,7 +501,7 @@ function updateCertToggle() {
     certToggle.setAttribute("aria-expanded", "false");
     certToggle.setAttribute("aria-label", "Show more certifications");
     certsGrid.classList.add("collapsed");
-    setCollapsedHeightForThreeRows();
+    setCollapsedHeightForRows(threshold);
   } else {
     // hide/move back to original wrapper if present
     certToggle.style.display = "none";
@@ -501,7 +524,8 @@ certToggle?.addEventListener("click", () => {
     certsGrid.classList.remove("collapsed");
   } else {
     // collapse
-    setCollapsedHeightForThreeRows();
+    const threshold = window.innerWidth >= 1024 ? 2 : 3;
+    setCollapsedHeightForRows(threshold);
     certToggle.innerHTML =
       '<i class="fas fa-chevron-down" aria-hidden="true"></i>';
     certToggle.setAttribute("aria-expanded", "false");
@@ -515,4 +539,132 @@ window.addEventListener("load", () => setTimeout(updateCertToggle, 80));
 window.addEventListener("resize", () => {
   clearTimeout(window._certToggleTimeout);
   window._certToggleTimeout = setTimeout(updateCertToggle, 200);
+});
+
+/* Projects toggle: uses existing projectsGrid declared earlier */
+const projectsToggle = document.getElementById("projects-toggle");
+
+function computeProjectRows() {
+  if (!projectsGrid) return 0;
+  const children = Array.from(projectsGrid.children).filter(
+    (c) => c.classList && c.classList.contains("project-card")
+  );
+  if (children.length === 0) return 0;
+  const firstTop = children[0].getBoundingClientRect().top;
+  let cols = 0;
+  for (const c of children) {
+    if (Math.abs(c.getBoundingClientRect().top - firstTop) < 2) cols++;
+    else break;
+  }
+  cols = Math.max(1, cols);
+  return Math.ceil(children.length / cols);
+}
+
+function setProjectsCollapsedHeightForRows(rows) {
+  if (!projectsGrid) return 0;
+  const children = Array.from(projectsGrid.children).filter(
+    (c) => c.classList && c.classList.contains("project-card")
+  );
+  if (children.length === 0) return 0;
+
+  // Group children by their top coordinate to identify rows (tolerance for sub-pixel differences)
+  const rowsMap = [];
+  const TOL = 3; // pixels tolerance for grouping
+  children.forEach((c) => {
+    const r = c.getBoundingClientRect();
+    const top = Math.round(r.top);
+    let rowIndex = rowsMap.findIndex((t) => Math.abs(t - top) <= TOL);
+    if (rowIndex === -1) {
+      rowsMap.push(top);
+      rowIndex = rowsMap.length - 1;
+    }
+    // store row index on element for later (not necessary but helpful)
+    c._rowIndex = rowIndex;
+  });
+
+  // Determine which elements belong to the last visible row (rows - 1 index)
+  const targetRowIndex = Math.min(rows - 1, rowsMap.length - 1);
+  // compute bottom of the last element in the target row
+  const gridRect = projectsGrid.getBoundingClientRect();
+  let maxBottom = gridRect.top; // start at grid top
+  children.forEach((c) => {
+    if (c._rowIndex === targetRowIndex) {
+      const r = c.getBoundingClientRect();
+      if (r.bottom > maxBottom) maxBottom = r.bottom;
+    }
+  });
+
+  // if no element matched (defensive), fall back to first-row measurement
+  if (maxBottom === gridRect.top && children[0]) {
+    const r = children[0].getBoundingClientRect();
+    maxBottom = r.bottom;
+  }
+
+  // Compute total height from grid top to bottom of target row. Subtract 1px to avoid
+  // accidentally revealing the start of the next card due to rounding.
+  let total = Math.ceil(maxBottom - gridRect.top);
+  total = Math.max(0, total - 1);
+  projectsGrid.style.maxHeight = `${total}px`;
+  return total;
+}
+
+function removeProjectsCollapsedHeight() {
+  if (!projectsGrid) return;
+  projectsGrid.style.maxHeight = "";
+}
+
+function updateProjectsToggle() {
+  if (!projectsGrid || !projectsToggle) return;
+  const rows = computeProjectRows();
+  // Responsive threshold: on small screens (<1024px) show toggle after 3 rows,
+  // on large screens (>=1024px) show toggle after 1 row (only one row visible initially).
+  const threshold = window.innerWidth < 1024 ? 3 : 1;
+  if (rows > threshold) {
+    if (projectsToggle.parentNode !== projectsGrid.parentNode) {
+      projectsGrid.parentNode.insertBefore(
+        projectsToggle,
+        projectsGrid.nextSibling
+      );
+    }
+    projectsToggle.classList.add("cert-toggle-icon");
+    projectsToggle.style.display = "inline-flex";
+    projectsToggle.innerHTML =
+      '<i class="fas fa-chevron-down" aria-hidden="true"></i>';
+    projectsToggle.setAttribute("aria-expanded", "false");
+    projectsToggle.setAttribute("aria-label", "Show more projects");
+    projectsGrid.classList.add("collapsed");
+    setProjectsCollapsedHeightForRows(threshold);
+  } else {
+    projectsToggle.style.display = "none";
+    projectsToggle.classList.remove("cert-toggle-icon");
+    projectsGrid.classList.remove("collapsed");
+    removeProjectsCollapsedHeight();
+  }
+}
+
+projectsToggle?.addEventListener("click", () => {
+  if (!projectsGrid) return;
+  const expanded = projectsToggle.getAttribute("aria-expanded") === "true";
+  if (!expanded) {
+    removeProjectsCollapsedHeight();
+    projectsToggle.innerHTML =
+      '<i class="fas fa-chevron-up" aria-hidden="true"></i>';
+    projectsToggle.setAttribute("aria-expanded", "true");
+    projectsToggle.setAttribute("aria-label", "Show fewer projects");
+    projectsGrid.classList.remove("collapsed");
+  } else {
+    const threshold = window.innerWidth < 1024 ? 3 : 1;
+    setProjectsCollapsedHeightForRows(threshold);
+    projectsToggle.innerHTML =
+      '<i class="fas fa-chevron-down" aria-hidden="true"></i>';
+    projectsToggle.setAttribute("aria-expanded", "false");
+    projectsToggle.setAttribute("aria-label", "Show more projects");
+    projectsGrid.classList.add("collapsed");
+  }
+});
+
+window.addEventListener("load", () => setTimeout(updateProjectsToggle, 120));
+window.addEventListener("resize", () => {
+  clearTimeout(window._projectsToggleTimeout);
+  window._projectsToggleTimeout = setTimeout(updateProjectsToggle, 220);
 });

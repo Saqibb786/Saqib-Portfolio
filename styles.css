@@ -24,6 +24,7 @@
     height: 4px;
     background: var(--gradient);
     border-radius: 2px;
+    
 }
 :root.light .footer-col.about h3 {
     color: #f1f5f9 !important;
@@ -272,7 +273,8 @@ body {
 
 /* Contact subtitle and social buttons */
 .contact-subtitle {
-    text-align: center;
+    text-align: center;    
+    cursor: default;
     color: var(--gray-text);
     font-size: 1.1rem;
     max-width: 700px;
@@ -1135,10 +1137,11 @@ section {
 
 
 .certifications-grid {
+    padding: .3rem;
+    cursor: default;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.5rem;
-    margin-bottom: 3rem;
     /* allow smooth expand/collapse when JS adjusts max-height */
     transition: max-height 300ms ease;
 }
@@ -1186,10 +1189,10 @@ section {
     border-radius: 999px;
     background: var(--card-bg);
     border: 1px solid var(--border-color);
-    color: var(--primary-color);
+    color: #fff;
     box-shadow: 0 6px 18px rgba(2,6,23,0.06);
     cursor: pointer;
-    margin: 0.5rem auto 0;
+    margin: 1.4rem auto 0; /* unified top spacing for both chevrons */
     font-size: 1rem;
     transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
 }
@@ -1199,8 +1202,20 @@ section {
 }
 .cert-toggle-icon:hover {
     transform: translateY(-3px);
-    color: var(--secondary-color);
+    color: var(--primary-color);
+    box-shadow: 0 7px 7px rgba(37, 99, 235, 0.1);
     background: linear-gradient(135deg, rgba(37,99,235,0.06), rgba(124,58,237,0.04));
+}
+
+/* Projects grid collapsed behavior mirrors certifications grid but ensures
+   the parent container can still expand when the grid is uncollapsed. */
+.projects-grid.collapsed {
+    overflow: hidden;
+}
+
+/* Ensure the icon toggle sits above the grid content on small screens */
+.cert-toggle-icon {
+    z-index: 50;
 }
 
 /* Ensure the old text-based wrapper is unobtrusive when JS moves the button */
@@ -1286,8 +1301,9 @@ section {
 }
 
 .activities {
-    display: grid;
+    display: grid;    
     gap: 1.5rem;
+    cursor: default;
     max-width: 800px;
     margin: 0 auto;
 }

@@ -70,9 +70,9 @@ This portfolio website is a testament to my passion for software development and
 .Saqib Portfolio/
 ├── Assets/
 │   ├── logo1.png
-│   ├── logo2.png
-│   ├── logo3.png
-│   └── logo5.png
+|   ├── Portfolio_thumbnail.png
+|
+|
 ├── index.html
 ├── script.js
 └── styles.css
