@@ -297,6 +297,10 @@ if (themeToggle) {
     themeToggle.innerHTML = root.classList.contains("light")
       ? '<i class="fas fa-sun"></i>'
       : '<i class="fas fa-moon"></i>';
+    themeToggle.setAttribute(
+      "aria-pressed",
+      root.classList.contains("light") ? "true" : "false"
+    );
     // Immediately update navbar theme on toggle (no scroll required)
     updateNavbarTheme();
   });
@@ -304,10 +308,32 @@ if (themeToggle) {
   themeToggle.innerHTML = root.classList.contains("light")
     ? '<i class="fas fa-sun"></i>'
     : '<i class="fas fa-moon"></i>';
+  themeToggle.setAttribute(
+    "aria-pressed",
+    root.classList.contains("light") ? "true" : "false"
+  );
 }
 
 // Ensure navbar reflects theme on initial load
 updateNavbarTheme();
+
+// If viewport grows past mobile breakpoint, ensure nav menu is reset
+window.addEventListener("resize", () => {
+  try {
+    if (window.innerWidth > 768 && navMenu) {
+      navMenu.classList.remove("active");
+      hamburger.classList.remove("active");
+      hamburger.setAttribute("aria-expanded", "false");
+      navMenu.style.visibility = "";
+      navMenu.style.opacity = "";
+      navMenu.style.transform = "";
+      navMenu.style.display = "";
+      navMenu.style.zIndex = "";
+      navMenu.style.background = "";
+      navMenu.style.color = "";
+    }
+  } catch {}
+});
 
 // Back to top
 const backToTop = document.getElementById("backToTop");

@@ -98,7 +98,7 @@
             class="nav-logo"
           />
         </a>
-        <ul class="nav-menu">
+        <ul id="primary-navigation" class="nav-menu">
           <li><a href="#home">Home</a></li>
           <li><a href="#about">About</a></li>
           <li><a href="#skills">Skills</a></li>
@@ -118,6 +118,7 @@
             class="hamburger"
             aria-label="Toggle navigation"
             aria-expanded="false"
+            aria-controls="primary-navigation"
             role="button"
             tabindex="0"
           >
@@ -154,6 +155,7 @@
           <a
             href="https://github.com/Saqibb786"
             target="_blank"
+            rel="noopener noreferrer"
             aria-label="GitHub"
           >
             <i class="fab fa-github"></i>
@@ -161,6 +163,7 @@
           <a
             href="https://www.linkedin.com/in/saqib-ali-butt/"
             target="_blank"
+            rel="noopener noreferrer"
             aria-label="LinkedIn"
           >
             <i class="fab fa-linkedin"></i>
@@ -788,6 +791,8 @@
             src="Assets/logo1.png"
             alt="Saqib Ali Butt Logo"
             class="footer-logo"
+            loading="lazy"
+            decoding="async"
           />
           <p>
             Aspiring Software Engineer <br />
@@ -808,14 +813,16 @@
           <h3>Connect</h3>
           <div class="footer-icons">
             <a
-              href="https://github.com/saqibbutt10000"
+              href="https://github.com/Saqibb786"
               target="_blank"
+              rel="noopener noreferrer"
               aria-label="GitHub"
               ><i class="fab fa-github"></i
             ></a>
             <a
-              href="https://linkedin.com/in/saqibbutt10000"
+              href="https://www.linkedin.com/in/saqib-ali-butt/"
               target="_blank"
+              rel="noopener noreferrer"
               aria-label="LinkedIn"
               ><i class="fab fa-linkedin-in"></i
             ></a>
