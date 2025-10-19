@@ -1139,6 +1139,79 @@ section {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.5rem;
     margin-bottom: 3rem;
+    /* allow smooth expand/collapse when JS adjusts max-height */
+    transition: max-height 300ms ease;
+}
+
+/* Collapsed state: limit grid height to approx 3 rows and hide overflow */
+.certifications-grid.collapsed {
+    /* height will be set inline by JS to exactly 3 rows; keep overflow hidden */
+    overflow: hidden;
+}
+
+/* Small ellipsis indicator shown when collapsed */
+.cert-ellipsis {
+    display: block;
+    font-size: 1.5rem;
+    color: var(--gray-text);
+    margin-top: 0.5rem;
+}
+
+/* Compact toggle that replaces the dots: looks like a subtle link, not a button */
+.cert-compact-toggle {
+    display: inline-block;
+    background: transparent;
+    border: none;
+    color: var(--primary-color);
+    font-weight: 600;
+    padding: 0.15rem 0.6rem;
+    margin-top: 0.5rem;
+    cursor: pointer;
+    text-decoration: underline;
+    border-radius: 6px;
+}
+.cert-compact-toggle:hover {
+    color: var(--secondary-color);
+    text-decoration: none;
+}
+
+/* Icon-style toggle placed where the dots were. Small circular icon that
+   looks like a subtle control rather than a full button. */
+.cert-toggle-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    color: var(--primary-color);
+    box-shadow: 0 6px 18px rgba(2,6,23,0.06);
+    cursor: pointer;
+    margin: 0.5rem auto 0;
+    font-size: 1rem;
+    transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+.cert-toggle-icon i {
+    font-size: 1rem;
+    line-height: 1;
+}
+.cert-toggle-icon:hover {
+    transform: translateY(-3px);
+    color: var(--secondary-color);
+    background: linear-gradient(135deg, rgba(37,99,235,0.06), rgba(124,58,237,0.04));
+}
+
+/* Ensure the old text-based wrapper is unobtrusive when JS moves the button */
+.cert-toggle-wrap { text-align: center; }
+.cert-toggle-wrap #cert-toggle { display: none; }
+
+/* Make the toggle button visible and slightly different style */
+.cert-toggle-wrap .btn {
+    display: inline-block;
+    padding: 8px 16px;
+    cursor: pointer;
 }
 
 .cert-card {

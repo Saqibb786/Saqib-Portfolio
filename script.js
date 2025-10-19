@@ -41,7 +41,6 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
   });
 });
 
-// Navbar background/theme updater (used on scroll and theme toggle)
 const updateNavbarTheme = () => {
   const navbar = document.querySelector(".navbar");
   if (!navbar) return;
@@ -411,4 +410,109 @@ form?.addEventListener("submit", async (e) => {
 // Scroll margin for anchor targets to account for fixed navbar
 document.querySelectorAll("section[id]").forEach((sec) => {
   sec.style.scrollMarginTop = "90px";
+});
+
+/* Certifications grid: See All / See Less toggle */
+const certsGrid = document.querySelector(".certifications-grid");
+const certToggle = document.getElementById("cert-toggle");
+
+function computeGridRows() {
+  if (!certsGrid) return 0;
+  const children = Array.from(certsGrid.children).filter(
+    (c) => c.classList && c.classList.contains("cert-card")
+  );
+  if (children.length === 0) return 0;
+
+  // Determine columns by checking how many cards fit in the first row
+  const firstTop = children[0].getBoundingClientRect().top;
+  let cols = 0;
+  for (const c of children) {
+    if (Math.abs(c.getBoundingClientRect().top - firstTop) < 2) cols++;
+    else break;
+  }
+  cols = Math.max(1, cols);
+  return Math.ceil(children.length / cols);
+}
+
+function setCollapsedHeightForThreeRows() {
+  // precisely compute height for 3 rows
+  const children = Array.from(certsGrid.children).filter(
+    (c) => c.classList && c.classList.contains("cert-card")
+  );
+  if (children.length === 0) return 0;
+  // measure first card height
+  const firstRect = children[0].getBoundingClientRect();
+  const cardHeight = firstRect.height;
+  // measure vertical gap: use offsetTop difference between first and next-row card (if exists)
+  let gap = 16; // fallback
+  if (children.length > 1) {
+    const secondRect = children[1].getBoundingClientRect();
+    gap = Math.abs(secondRect.top - firstRect.top) - cardHeight;
+    if (isNaN(gap) || gap < 0) gap = 16;
+  }
+  const rows = 3;
+  const total = rows * cardHeight + (rows - 1) * gap;
+  // set inline maxHeight when collapsed
+  certsGrid.style.maxHeight = `${Math.round(total)}px`;
+  return total;
+}
+
+function removeCollapsedHeight() {
+  certsGrid.style.maxHeight = "";
+}
+
+function updateCertToggle() {
+  if (!certsGrid || !certToggle) return;
+  const rows = computeGridRows();
+  if (rows > 3) {
+    // show toggle and set collapsed height
+    // move the existing button into place right after the grid (in case it
+    // started inside a different wrapper). This preserves listeners.
+    if (certToggle.parentNode !== certsGrid.parentNode) {
+      certsGrid.parentNode.insertBefore(certToggle, certsGrid.nextSibling);
+    }
+    certToggle.classList.add("cert-toggle-icon");
+    certToggle.style.display = "inline-flex";
+    certToggle.innerHTML =
+      '<i class="fas fa-chevron-down" aria-hidden="true"></i>';
+    certToggle.setAttribute("aria-expanded", "false");
+    certToggle.setAttribute("aria-label", "Show more certifications");
+    certsGrid.classList.add("collapsed");
+    setCollapsedHeightForThreeRows();
+  } else {
+    // hide/move back to original wrapper if present
+    certToggle.style.display = "none";
+    certToggle.classList.remove("cert-toggle-icon");
+    certsGrid.classList.remove("collapsed");
+    removeCollapsedHeight();
+  }
+}
+
+certToggle?.addEventListener("click", () => {
+  if (!certsGrid) return;
+  const expanded = certToggle.getAttribute("aria-expanded") === "true";
+  if (!expanded) {
+    // expand
+    removeCollapsedHeight();
+    certToggle.innerHTML =
+      '<i class="fas fa-chevron-up" aria-hidden="true"></i>';
+    certToggle.setAttribute("aria-expanded", "true");
+    certToggle.setAttribute("aria-label", "Show fewer certifications");
+    certsGrid.classList.remove("collapsed");
+  } else {
+    // collapse
+    setCollapsedHeightForThreeRows();
+    certToggle.innerHTML =
+      '<i class="fas fa-chevron-down" aria-hidden="true"></i>';
+    certToggle.setAttribute("aria-expanded", "false");
+    certToggle.setAttribute("aria-label", "Show more certifications");
+    certsGrid.classList.add("collapsed");
+  }
+});
+
+// Initial run and on resize
+window.addEventListener("load", () => setTimeout(updateCertToggle, 80));
+window.addEventListener("resize", () => {
+  clearTimeout(window._certToggleTimeout);
+  window._certToggleTimeout = setTimeout(updateCertToggle, 200);
 });
