@@ -415,6 +415,23 @@ body {
         box-shadow: var(--shadow);
     }
 
+/* Improve card shadow visibility in light mode: some shadows can be subtle on
+   white backgrounds, so provide slightly stronger, specific shadows for
+   projects and certifications while preserving existing hover transforms. */
+:root.light .project-card,
+:root.light .cert-card {
+    box-shadow: 0 8px 30px rgba(2,6,23,0.06);
+}
+
+:root.light .project-card:hover {
+    /* keep existing transform but provide a stronger light-mode shadow */
+    box-shadow: 0 15px 40px rgba(2,6,23,0.10);
+}
+
+:root.light .cert-card:hover {
+    box-shadow: 0 10px 30px rgba(2,6,23,0.10);
+}
+
 /* Footer Modern Layout */
 
 /* Footer Modern Layout - improved for light/dark */
@@ -945,7 +962,7 @@ section {
 
 .project-card {
     background: var(--card-bg);
-    padding: 2rem;
+    padding: 1.95rem;
     border-radius: 15px;
     transition: all 0.3s;
     border: 1px solid transparent;
