@@ -618,6 +618,8 @@ body {
     filter: none;
 }
 
+
+
 @media (max-width: 768px) {
     .nav-logo { height: 60px; }
 }
@@ -1216,12 +1218,23 @@ section {
 .cert-toggle-icon i {
     font-size: 1rem;
     line-height: 1;
+
 }
+
 .cert-toggle-icon:hover {
     transform: translateY(-3px);
     color: var(--primary-color);
     box-shadow: 0 7px 7px rgba(37, 99, 235, 0.1);
     background: linear-gradient(135deg, rgba(37,99,235,0.06), rgba(124,58,237,0.04));
+}
+
+:root.light .cert-toggle-icon {
+    color: var(--primary-color);
+    transition: .5s ease;
+}
+:root.light .cert-toggle-icon:hover {
+    background: var(--primary-color);
+    color: #fff;
 }
 
 /* Projects grid collapsed behavior mirrors certifications grid but ensures
@@ -1448,23 +1461,74 @@ section {
         min-height: 56px;
     }
 
+    /* Mobile navigation: overlay below the navbar, hidden by default and
+       revealed via the .active class. Use visibility + opacity to avoid
+       interaction when hidden and ensure it sits above other content. */
     .nav-menu {
         position: fixed;
-        left: -100%;
-        top: 70px;
+        left: 0;
+        top: 72px; /* align immediately below navbar (navbar min-height = 72px) */
+        right: 0;
+        height: calc(100vh - 72px);
+        display: flex;
         flex-direction: column;
         background: rgba(15, 23, 42, 0.98);
         width: 100%;
         text-align: center;
-        transition: 0.3s;
-        padding: 2rem 0;
+        padding: 1.25rem 0;
         gap: 1rem;
         justify-content: flex-start;
         align-items: center;
+        z-index: 1200;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+        visibility: hidden;
+        opacity: 0;
+        transform: translateY(-6px);
+        transition: opacity 180ms ease, transform 200ms ease, visibility 0ms linear 180ms;
     }
 
+    /* When active, make it visible and interactive */
     .nav-menu.active {
-        left: 0;
+        visibility: visible;
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity 200ms ease, transform 200ms ease;
+    }
+
+    /* Ensure hamburger sits above the nav when opened */
+    .hamburger {
+        z-index: 1300;
+    }
+
+    /* Make mobile nav links more tappable */
+    .nav-menu a {
+        display: block;
+        padding: 0.85rem 1.25rem;
+        font-size: 1.05rem;
+        color: var(--light-text);
+        width: 100%;
+    }
+
+    /* Light mode: ensure the mobile nav overlay matches light theme so
+       links remain readable when :root.light is active (fixes invisible links) */
+    :root.light .nav-menu {
+        background: #ffffff; /* match navbar in light theme */
+        color: #0f172a;
+    }
+    /* Force high-specificity link color for mobile nav in light mode */
+    :root.light .nav-menu a {
+        color: #0f172a !important;
+        background: none !important;
+    }
+
+    /* Ensure the active state is visible in light mode even if transitions
+       or other rules delay visibility changes in some environments */
+    :root.light .nav-menu.active {
+        visibility: visible !important;
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+        transition: opacity 200ms ease, transform 200ms ease !important;
     }
 
     .hero-title {
