@@ -5,7 +5,7 @@
 _A modern, responsive, and feature-rich portfolio website built with vanilla HTML, CSS, and JavaScript._
 
 <p align="center">
-  <a href="https://saqib-personalportfolio.netlify.app/" target="_blank">
+  <a href="https://saqib-personalportfolio.netlify.app/" target="_blank" rel="noopener noreferrer">
     <img src="https://img.shields.io/badge/Live-Preview-blue?style=for-the-badge&logo=netlify">
   </a>
 </p>
@@ -20,7 +20,7 @@ _A modern, responsive, and feature-rich portfolio website built with vanilla HTM
 </p>
 
 <div align="center">
-  <a href="#">
+  <a href="https://saqib-personalportfolio.netlify.app/" target="_blank" rel="noopener noreferrer">
     <img src="Assets/Portfolio_thumbnail.png" alt="Portfolio Preview" width="800">
   </a>
 </div>
