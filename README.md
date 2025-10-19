@@ -5,7 +5,7 @@
 _A modern, responsive, and feature-rich portfolio website built with vanilla HTML, CSS, and JavaScript._
 
 <p align="center">
-  <a href="YOUR_LIVE_PREVIEW_URL_HERE" target="_blank">
+  <a href="https://saqib-personalportfolio.netlify.app/" target="_blank">
     <img src="https://img.shields.io/badge/Live-Preview-brightgreen?style=for-the-badge&logo=vercel">
   </a>
 </p>
