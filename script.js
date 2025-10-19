@@ -7,6 +7,27 @@ hamburger.addEventListener("click", () => {
   hamburger.classList.toggle("active");
   const expanded = hamburger.classList.contains("active");
   hamburger.setAttribute("aria-expanded", expanded.toString());
+  // Fallback: some browsers/environments may not apply the CSS visibility
+  // transition reliably. Force inline visibility for small screens so the
+  // menu always appears when the hamburger is toggled.
+  if (navMenu) {
+    if (window.innerWidth <= 768) {
+      if (navMenu.classList.contains("active")) {
+        navMenu.style.visibility = "visible";
+        navMenu.style.opacity = "1";
+        navMenu.style.transform = "translateY(0)";
+      } else {
+        navMenu.style.opacity = "0";
+        navMenu.style.visibility = "hidden";
+        navMenu.style.transform = "translateY(-6px)";
+      }
+    } else {
+      // Remove inline fallback styles on larger screens to let CSS handle layout
+      navMenu.style.visibility = "";
+      navMenu.style.opacity = "";
+      navMenu.style.transform = "";
+    }
+  }
 });
 
 hamburger.addEventListener("keydown", (e) => {
