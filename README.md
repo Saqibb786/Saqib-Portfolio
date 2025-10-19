@@ -43,26 +43,26 @@ _A modern, responsive, and feature-rich portfolio website built with vanilla HTM
 
 ## About The Project
 
-This portfolio website is a testament to my passion for web development and design. It's a single-page application built from the ground up using fundamental web technologies. The goal was to create a modern, clean, and responsive portfolio that not only showcases my work but also demonstrates my skills in front-end development.
+This portfolio website is a testament to my passion for software development and design. It's a single-page application built from the ground up using fundamental web technologies. The goal was to create a modern, clean, and responsive portfolio that not only showcases my work but also demonstrates my skills in front-end development.
 
 ## Key Features
 
-*   🎨 **Modern & Clean UI:** Aesthetically pleasing design with a focus on user experience.
-*   📱 **Fully Responsive:** Adapts seamlessly to all screen sizes, from mobile to desktop.
-*   🌓 **Light/Dark Theme:** A theme toggle for a comfortable viewing experience in any lighting condition.
-*   ✨ **Smooth Animations:** Subtle animations and transitions that bring the website to life.
-*   🚀 **Fast & Lightweight:** Optimized for performance with no heavy frameworks or libraries.
-*   📫 **Contact Form:** A functional contact form powered by EmailJS for easy communication.
+- 🎨 **Modern & Clean UI:** Aesthetically pleasing design with a focus on user experience.
+- 📱 **Fully Responsive:** Adapts seamlessly to all screen sizes, from mobile to desktop.
+- 🌓 **Light/Dark Theme:** A theme toggle for a comfortable viewing experience in any lighting condition.
+- ✨ **Smooth Animations:** Subtle animations and transitions that bring the website to life.
+- 🚀 **Fast & Lightweight:** Optimized for performance with no heavy frameworks or libraries.
+- 📫 **Contact Form:** A functional contact form powered by EmailJS for easy communication.
 
 ## Tech Stack
 
-| Technology   | Description                                                                                                   |
-| ------------ | ------------------------------------------------------------------------------------------------------------- |
-| **HTML5**    | The backbone of the website, structured with semantic HTML5.                                                    |
-| **CSS3**     | Styled with modern CSS3, including Flexbox, Grid, and custom properties for theming.                          |
-| **JavaScript** | Vanilla JavaScript for all the dynamic functionality, including the theme toggle and smooth scrolling.        |
-| **Font Awesome** | A comprehensive icon library used throughout the website.                                                     |
-| **EmailJS**  | A service that allows sending emails directly from JavaScript, used for the contact form.                     |
+| Technology       | Description                                                                                            |
+| ---------------- | ------------------------------------------------------------------------------------------------------ |
+| **HTML5**        | The backbone of the website, structured with semantic HTML5.                                           |
+| **CSS3**         | Styled with modern CSS3, including Flexbox, Grid, and custom properties for theming.                   |
+| **JavaScript**   | Vanilla JavaScript for all the dynamic functionality, including the theme toggle and smooth scrolling. |
+| **Font Awesome** | A comprehensive icon library used throughout the website.                                              |
+| **EmailJS**      | A service that allows sending emails directly from JavaScript, used for the contact form.              |
 
 ## Project Structure
 
@@ -92,15 +92,6 @@ To get a local copy up and running, follow these simple steps.
     ```
 3.  **Open `index.html` in your browser.**
 
-## Roadmap
-
-*   [ ] Add a blog section to share my thoughts and experiences.
-*   [ ] Implement a CMS for easier content management.
-*   [ ] Add more projects with detailed case studies.
-*   [ ] Enhance the animations and add more micro-interactions.
-
-See the [open issues](https://github.com/Saqibb786/Saqib-Portfolio/issues) for a full list of proposed features (and known issues).
-
 ## Contributing
 
 Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -127,6 +118,6 @@ Project Link: [https://github.com/Saqibb786/Saqib-Portfolio](https://github.com/
 
 ## Acknowledgments
 
-*   [Img Shields](https://shields.io)
-*   [Font Awesome](https://fontawesome.com)
-*   [EmailJS](https://www.emailjs.com/)
+- [Img Shields](https://shields.io)
+- [Font Awesome](https://fontawesome.com)
+- [EmailJS](https://www.emailjs.com/)
