@@ -7,25 +7,57 @@ hamburger.addEventListener("click", () => {
   hamburger.classList.toggle("active");
   const expanded = hamburger.classList.contains("active");
   hamburger.setAttribute("aria-expanded", expanded.toString());
-  // Fallback: some browsers/environments may not apply the CSS visibility
-  // transition reliably. Force inline visibility for small screens so the
-  // menu always appears when the hamburger is toggled.
+
+  // Debug logging to help diagnose environments where the menu doesn't show
+  try {
+    console.log(
+      "[nav] hamburger toggle -> expanded:",
+      expanded,
+      "navMenu classes:",
+      navMenu?.className
+    );
+  } catch (e) {}
+
+  // Stronger inline-style fallback for small screens and flaky environments.
+  // This forces the menu to be visible and ensures it sits above other layers.
   if (navMenu) {
     if (window.innerWidth <= 768) {
-      if (navMenu.classList.contains("active")) {
+      if (expanded) {
         navMenu.style.visibility = "visible";
         navMenu.style.opacity = "1";
         navMenu.style.transform = "translateY(0)";
+        navMenu.style.display = "flex";
+        navMenu.style.zIndex = "9999"; // ensure it's above other overlays
+        // Match inline background to current theme to avoid invisible text
+        if (document.documentElement.classList.contains("light")) {
+          navMenu.style.background = "#ffffff";
+          navMenu.style.color = "#0f172a";
+        } else {
+          navMenu.style.background = "rgba(15, 23, 42, 0.98)";
+          navMenu.style.color = "";
+        }
       } else {
+        // Collapse: reset to the hidden transition state and clear strong inline overrides after animation
         navMenu.style.opacity = "0";
         navMenu.style.visibility = "hidden";
         navMenu.style.transform = "translateY(-6px)";
+        // Allow transition to finish before clearing display/zIndex so it doesn't flash
+        setTimeout(() => {
+          navMenu.style.display = "";
+          navMenu.style.zIndex = "";
+          navMenu.style.background = "";
+          navMenu.style.color = "";
+        }, 250);
       }
     } else {
-      // Remove inline fallback styles on larger screens to let CSS handle layout
+      // On larger screens, let CSS control visibility/layout and clear any inline fallbacks
       navMenu.style.visibility = "";
       navMenu.style.opacity = "";
       navMenu.style.transform = "";
+      navMenu.style.display = "";
+      navMenu.style.zIndex = "";
+      navMenu.style.background = "";
+      navMenu.style.color = "";
     }
   }
 });
@@ -42,6 +74,20 @@ document.querySelectorAll(".nav-menu a").forEach((link) => {
   link.addEventListener("click", () => {
     navMenu.classList.remove("active");
     hamburger.classList.remove("active");
+    hamburger.setAttribute("aria-expanded", "false");
+    
+    // Apply the same cleanup logic as the hamburger toggle to properly close the menu
+    if (navMenu && window.innerWidth <= 768) {
+      navMenu.style.opacity = "0";
+      navMenu.style.visibility = "hidden";
+      navMenu.style.transform = "translateY(-6px)";
+      setTimeout(() => {
+        navMenu.style.display = "";
+        navMenu.style.zIndex = "";
+        navMenu.style.background = "";
+        navMenu.style.color = "";
+      }, 250);
+    }
   });
 });
 
