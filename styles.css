@@ -659,6 +659,16 @@ body {
         -webkit-tap-highlight-color: transparent;
         outline: none;
     }
+    /* Prevent sticky hover look for chevron toggle on touch devices */
+    .cert-toggle-icon:hover {
+        transform: none !important;
+        color: inherit !important;
+        background: inherit !important;
+        box-shadow: inherit !important;
+    }
+    .cert-toggle-icon:focus {
+        outline: none;
+    }
 }
 
 
@@ -1279,7 +1289,7 @@ section {
     cursor: pointer;
     margin: 1.4rem auto 0; /* unified top spacing for both chevrons */
     font-size: 1rem;
-    transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
+    transition: .4s ease;
 }
 .cert-toggle-icon i {
     font-size: 1rem;
@@ -1296,7 +1306,7 @@ section {
 
 :root.light .cert-toggle-icon {
     color: var(--primary-color);
-    transition: .5s ease;
+    
 }
 :root.light .cert-toggle-icon:hover {
     background: var(--primary-color);

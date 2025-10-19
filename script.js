@@ -615,6 +615,9 @@ certToggle?.addEventListener("click", () => {
     certToggle.setAttribute("aria-expanded", "true");
     certToggle.setAttribute("aria-label", "Show fewer certifications");
     certsGrid.classList.remove("collapsed");
+    try {
+      certToggle.blur();
+    } catch {}
   } else {
     // collapse
     const threshold = window.innerWidth >= 1024 ? 2 : 3;
@@ -624,6 +627,9 @@ certToggle?.addEventListener("click", () => {
     certToggle.setAttribute("aria-expanded", "false");
     certToggle.setAttribute("aria-label", "Show more certifications");
     certsGrid.classList.add("collapsed");
+    try {
+      certToggle.blur();
+    } catch {}
   }
 });
 
@@ -745,6 +751,9 @@ projectsToggle?.addEventListener("click", () => {
     projectsToggle.setAttribute("aria-expanded", "true");
     projectsToggle.setAttribute("aria-label", "Show fewer projects");
     projectsGrid.classList.remove("collapsed");
+    try {
+      projectsToggle.blur();
+    } catch {}
   } else {
     const threshold = window.innerWidth < 1024 ? 3 : 1;
     setProjectsCollapsedHeightForRows(threshold);
@@ -753,6 +762,9 @@ projectsToggle?.addEventListener("click", () => {
     projectsToggle.setAttribute("aria-expanded", "false");
     projectsToggle.setAttribute("aria-label", "Show more projects");
     projectsGrid.classList.add("collapsed");
+    try {
+      projectsToggle.blur();
+    } catch {}
   }
 });
 
