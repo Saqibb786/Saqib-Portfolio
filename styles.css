@@ -1194,6 +1194,15 @@ section {
     display: inline-flex;
     margin-bottom: 0;
 }
+/* Ensure the smaller badge size overrides the more general .cert-card i rule (higher specificity) */
+.cert-card .cert-header i.cert-badge {
+    font-size: 1.65rem; /* smaller than the main cert icon */
+    line-height: 1;
+    color: var(--primary-color);
+    margin-right: 0rem;
+    display: inline-flex;
+    vertical-align: middle;
+}
 .cert-card .cert-header h4 {
     margin: 0;
 }
