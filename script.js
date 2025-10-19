@@ -1,0 +1,414 @@
+// Mobile Navigation Toggle
+const hamburger = document.querySelector(".hamburger");
+const navMenu = document.querySelector(".nav-menu");
+
+hamburger.addEventListener("click", () => {
+  navMenu.classList.toggle("active");
+  hamburger.classList.toggle("active");
+  const expanded = hamburger.classList.contains("active");
+  hamburger.setAttribute("aria-expanded", expanded.toString());
+});
+
+hamburger.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" || e.key === " ") {
+    e.preventDefault();
+    hamburger.click();
+  }
+});
+
+// Close mobile menu when clicking on a link
+document.querySelectorAll(".nav-menu a").forEach((link) => {
+  link.addEventListener("click", () => {
+    navMenu.classList.remove("active");
+    hamburger.classList.remove("active");
+  });
+});
+
+// Smooth Scrolling
+document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+  anchor.addEventListener("click", function (e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute("href"));
+    if (target) {
+      const offsetTop = target.offsetTop - 70;
+      window.scrollTo({
+        top: offsetTop,
+        behavior: "smooth",
+      });
+      target.setAttribute("tabindex", "-1");
+      target.focus({ preventScroll: true });
+    }
+  });
+});
+
+// Navbar background/theme updater (used on scroll and theme toggle)
+const updateNavbarTheme = () => {
+  const navbar = document.querySelector(".navbar");
+  if (!navbar) return;
+  const rootEl = document.documentElement;
+  const isLight = rootEl.classList.contains("light");
+
+  if (isLight) {
+    navbar.style.background = "#fff";
+    navbar.style.boxShadow =
+      window.scrollY > 50
+        ? "0 4px 20px rgba(30,41,59,0.07)"
+        : "0 2px 10px rgba(30,41,59,0.04)";
+    navbar.style.borderBottom = "1px solid #e2e8f0";
+    // Force nav text color for light mode
+    navbar.querySelectorAll(".nav-brand, .nav-menu a").forEach((el) => {
+      el.style.color = "#0f172a";
+      el.style.background = "none";
+      el.style.webkitBackgroundClip = "initial";
+      el.style.webkitTextFillColor = "initial";
+      el.style.backgroundClip = "initial";
+    });
+  } else {
+    if (window.scrollY > 50) {
+      navbar.style.background = "rgba(15, 23, 42, 0.98)";
+      navbar.style.boxShadow = "0 4px 20px rgba(0, 0, 0, 0.5)";
+    } else {
+      navbar.style.background = "rgba(15, 23, 42, 0.95)";
+      navbar.style.boxShadow = "0 2px 10px rgba(0, 0, 0, 0.3)";
+    }
+    navbar.style.borderBottom = "none";
+    // Reset nav text color to CSS defaults for dark mode
+    navbar.querySelectorAll(".nav-brand, .nav-menu a").forEach((el) => {
+      el.style.color = "";
+      el.style.background = "";
+      el.style.webkitBackgroundClip = "";
+      el.style.webkitTextFillColor = "";
+      el.style.backgroundClip = "";
+    });
+  }
+};
+
+// Apply on scroll
+window.addEventListener("scroll", updateNavbarTheme);
+
+// Intersection Observer for fade-in animations
+const observerOptions = {
+  threshold: 0.1,
+  rootMargin: "0px 0px -50px 0px",
+};
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = "1";
+      entry.target.style.transform = "translateY(0)";
+    }
+  });
+}, observerOptions);
+
+// Observe all sections for animation
+document.querySelectorAll("section").forEach((section) => {
+  section.style.opacity = "0";
+  section.style.transform = "translateY(20px)";
+  section.style.transition = "opacity 0.6s ease-out, transform 0.6s ease-out";
+  observer.observe(section);
+});
+
+// Animate skill tags on scroll
+const skillObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      const tags = entry.target.querySelectorAll(".skill-tag");
+      tags.forEach((tag, index) => {
+        setTimeout(() => {
+          tag.style.opacity = "1";
+          tag.style.transform = "translateY(0)";
+        }, index * 50);
+      });
+    }
+  });
+}, observerOptions);
+
+document.querySelectorAll(".skill-category").forEach((category) => {
+  const tags = category.querySelectorAll(".skill-tag");
+  tags.forEach((tag) => {
+    tag.style.opacity = "0";
+    tag.style.transform = "translateY(10px)";
+    tag.style.transition = "opacity 0.3s ease-out, transform 0.3s ease-out";
+  });
+  skillObserver.observe(category);
+});
+
+// Animate project cards
+const projectObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      const cards = entry.target.querySelectorAll(".project-card");
+      cards.forEach((card, index) => {
+        setTimeout(() => {
+          card.style.opacity = "1";
+          card.style.transform = "translateY(0)";
+        }, index * 100);
+      });
+    }
+  });
+}, observerOptions);
+
+const projectsGrid = document.querySelector(".projects-grid");
+if (projectsGrid) {
+  const cards = projectsGrid.querySelectorAll(".project-card");
+  cards.forEach((card) => {
+    card.style.opacity = "0";
+    card.style.transform = "translateY(30px)";
+    card.style.transition = "opacity 0.5s ease-out, transform 0.5s ease-out";
+  });
+  projectObserver.observe(projectsGrid);
+}
+
+// Add active state to navigation based on scroll position
+window.addEventListener("scroll", () => {
+  let current = "";
+  const sections = document.querySelectorAll("section");
+
+  sections.forEach((section) => {
+    const sectionTop = section.offsetTop;
+    const sectionHeight = section.clientHeight;
+    if (window.pageYOffset >= sectionTop - 100) {
+      current = section.getAttribute("id");
+    }
+  });
+
+  document.querySelectorAll(".nav-menu a").forEach((link) => {
+    link.classList.remove("active");
+    link.removeAttribute("aria-current");
+    if (link.getAttribute("href") === `#${current}`) {
+      link.classList.add("active");
+      link.setAttribute("aria-current", "page");
+    }
+  });
+});
+
+// Typing effect for hero subtitle (optional enhancement)
+const heroSubtitle = document.querySelector(".hero-subtitle");
+if (heroSubtitle) {
+  const text = heroSubtitle.textContent;
+  heroSubtitle.textContent = "";
+  let i = 0;
+
+  const typeWriter = () => {
+    if (i < text.length) {
+      heroSubtitle.textContent += text.charAt(i);
+      i++;
+      setTimeout(typeWriter, 100);
+    }
+  };
+
+  // Start typing effect after a short delay
+  setTimeout(typeWriter, 500);
+}
+
+// Console message for developers
+console.log(
+  "%c👋 Hello, Developer!",
+  "font-size: 20px; font-weight: bold; color: #3b82f6;"
+);
+console.log(
+  "%cInterested in how this portfolio was built? Check out the source code!",
+  "font-size: 14px; color: #94a3b8;"
+);
+console.log(
+  "%cGitHub: https://github.com/Saqibb786",
+  "font-size: 14px; color: #10b981;"
+);
+
+// Theme toggle with persistence
+const root = document.documentElement;
+const themeToggle = document.querySelector(".theme-toggle");
+const storedTheme = localStorage.getItem("theme");
+if (storedTheme === "light") {
+  root.classList.add("light");
+}
+if (themeToggle) {
+  themeToggle.addEventListener("click", () => {
+    root.classList.toggle("light");
+    const mode = root.classList.contains("light") ? "light" : "dark";
+    localStorage.setItem("theme", mode);
+    themeToggle.innerHTML = root.classList.contains("light")
+      ? '<i class="fas fa-sun"></i>'
+      : '<i class="fas fa-moon"></i>';
+    // Immediately update navbar theme on toggle (no scroll required)
+    updateNavbarTheme();
+  });
+  // Set correct icon at load
+  themeToggle.innerHTML = root.classList.contains("light")
+    ? '<i class="fas fa-sun"></i>'
+    : '<i class="fas fa-moon"></i>';
+}
+
+// Ensure navbar reflects theme on initial load
+updateNavbarTheme();
+
+// Back to top
+const backToTop = document.getElementById("backToTop");
+window.addEventListener("scroll", () => {
+  if (window.scrollY > 400) backToTop?.classList.add("show");
+  else backToTop?.classList.remove("show");
+});
+backToTop?.addEventListener("click", () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+// Dynamic year
+const yearEl = document.getElementById("year");
+if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+// Contact form -> EmailJS (with mailto fallback)
+const form = document.getElementById("contact-form");
+const submitBtn = form?.querySelector('button[type="submit"]');
+const statusEl = document.createElement("div");
+statusEl.id = "form-status";
+statusEl.setAttribute("role", "status");
+statusEl.style.marginTop = "0.75rem";
+statusEl.style.fontSize = "0.95rem";
+statusEl.style.minHeight = "1.25rem";
+form?.appendChild(statusEl);
+
+// Initialize EmailJS if available and keys injected later
+const EMAILJS_PUBLIC_KEY = window.EMAILJS_PUBLIC_KEY || ""; // optionally set via inline script or env
+const EMAILJS_SERVICE_ID = window.EMAILJS_SERVICE_ID || "";
+const EMAILJS_TEMPLATE_ID = window.EMAILJS_TEMPLATE_ID || "";
+if (window.emailjs && EMAILJS_PUBLIC_KEY) {
+  try {
+    window.emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+  } catch {}
+}
+
+const setStatus = (msg, type = "info") => {
+  if (!statusEl) return;
+  statusEl.textContent = msg;
+  statusEl.style.color =
+    type === "error" ? "#ef4444" : type === "success" ? "#10b981" : "#94a3b8";
+};
+
+const sendViaMailto = ({ name, email, subject, message }) => {
+  const body = `Name: ${name}\nEmail: ${email}\n\n${message}`;
+  const mailto = `mailto:saqibbutt10000@gmail.com?subject=${encodeURIComponent(
+    subject
+  )}&body=${encodeURIComponent(body)}`;
+  window.location.href = mailto;
+};
+
+// Simple in-memory rate limit (per session)
+let lastSubmitAt = 0;
+const RATE_LIMIT_MS = 15 * 1000; // 15s between submissions
+
+form?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const subject = document.getElementById("subject").value.trim();
+  const message = document.getElementById("message").value.trim();
+  const honey = (document.getElementById("website")?.value || "").trim();
+
+  // Honeypot trap
+  if (honey) {
+    // Silently accept to mislead bots
+    setStatus("Thanks! Your message was sent successfully.", "success");
+    form.reset();
+    return;
+  }
+
+  // Basic validation
+  if (!name || !email || !subject || !message) {
+    setStatus("Please complete all fields.", "error");
+    return;
+  }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    setStatus("Please enter a valid email address.", "error");
+    return;
+  }
+
+  // Basic anti-link spam: limit number of URLs
+  const urlMatches = (message.match(/https?:\/\//gi) || []).length;
+  if (urlMatches > 3) {
+    setStatus(
+      "Too many links in the message. Please reduce and try again.",
+      "error"
+    );
+    return;
+  }
+
+  // Extra length protection (defense-in-depth beyond maxlength)
+  if (message.length > 3000 || subject.length > 150 || name.length > 100) {
+    setStatus(
+      "Your message is too long. Please shorten and try again.",
+      "error"
+    );
+    return;
+  }
+
+  // Rate limiting
+  const now = Date.now();
+  if (now - lastSubmitAt < RATE_LIMIT_MS) {
+    const wait = Math.ceil((RATE_LIMIT_MS - (now - lastSubmitAt)) / 1000);
+    setStatus(`Please wait ${wait}s before sending again.`, "error");
+    return;
+  }
+  lastSubmitAt = now;
+
+  setStatus("Sending…", "info");
+  submitBtn && (submitBtn.disabled = true);
+
+  // Extra context and HTML-friendly message for EmailJS templates
+  const escapeHtml = (s) =>
+    s
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/\"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  const message_html = escapeHtml(message).replace(/\n/g, "<br>");
+  const submitted_at = new Date().toLocaleString();
+  const page_url = window.location.href;
+  const user_agent = navigator.userAgent;
+
+  const payload = {
+    from_name: name,
+    reply_to: email,
+    subject,
+    message,
+    message_html,
+    submitted_at,
+    page_url,
+    user_agent,
+  };
+
+  const canUseEmailJS = Boolean(
+    window.emailjs &&
+      EMAILJS_PUBLIC_KEY &&
+      EMAILJS_SERVICE_ID &&
+      EMAILJS_TEMPLATE_ID
+  );
+  if (!canUseEmailJS) {
+    // Fallback to mailto if EmailJS is not configured yet
+    sendViaMailto({ name, email, subject, message });
+    setStatus("Opening your email client…", "info");
+    return;
+  }
+
+  try {
+    await window.emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, payload);
+    setStatus("Thanks! Your message was sent successfully.", "success");
+    form.reset();
+  } catch (err) {
+    console.error("EmailJS error:", err);
+    setStatus(
+      "Couldn’t send via email service. Opening your email client…",
+      "error"
+    );
+    sendViaMailto({ name, email, subject, message });
+  } finally {
+    submitBtn && (submitBtn.disabled = false);
+  }
+});
+
+// Scroll margin for anchor targets to account for fixed navbar
+document.querySelectorAll("section[id]").forEach((sec) => {
+  sec.style.scrollMarginTop = "90px";
+});
