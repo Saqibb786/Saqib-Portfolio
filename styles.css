@@ -936,6 +936,62 @@ section {
     padding: 0;
 }
 
+/* Photo column styling */
+.about-photo-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+.about-photo-wrapper {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid #cbd5e1;
+    box-shadow: 0 10px 40px rgba(203, 213, 225, 0.3);
+    transition: all 0.3s ease;
+}
+
+.about-photo-wrapper:hover {
+    box-shadow: 0 15px 50px rgba(203, 213, 225, 0.4);
+}
+
+.about-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.about-name {
+    font-size: 2rem;
+    font-weight: 400;
+    font-family: 'Brush Script MT', 'Lucida Handwriting', 'Apple Chancery', cursive;
+    font-style: italic;
+    color: #cbd5e1;
+    text-align: center;
+    letter-spacing: 1px;
+    margin: 0;
+    text-shadow: 0 2px 10px rgba(203, 213, 225, 0.3);
+    position: relative;
+}
+
+.about-name::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 2px;
+    background: #cbd5e1;
+    border-radius: 2px;
+    opacity: 0.6;
+}
+
 .about-heading {
     display: flex;
     align-items: center;
@@ -1532,6 +1588,10 @@ section {
     .about-grid {
         grid-template-columns: 1fr;
         gap: 2rem;
+    }
+    /* Reorder: show photo first, then professional summary on mobile */
+    .about-photo-col {
+        order: -1;
     }
     .hamburger {
         display: flex;
