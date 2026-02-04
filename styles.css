@@ -1104,16 +1104,39 @@ section {
 }
 
 .project-status {
-    color: var(--accent-color);
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
     font-weight: 600;
-    margin-bottom: 0.5rem;
-    font-size: 0.9rem;
+    margin-bottom: 0.8rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #cfe1ff;
+    background: rgba(37, 99, 235, 0.12);
+    border: 1px solid rgba(37, 99, 235, 0.28);
+    box-shadow: none;
+}
+
+.project-status.ongoing {
+    background: rgba(6, 182, 212, 0.12);
+    border-color: rgba(6, 182, 212, 0.4);
+    color: #c9f3ff;
 }
 
 .project-card p {
     color: var(--gray-text);
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.6rem;
     line-height: 1.6;
+}
+
+.project-problem strong,
+.project-solution strong {
+    color: #e2e8f0;
+}
+
+.project-solution {
+    margin-bottom: 1.1rem;
 }
 
 .project-tags {
