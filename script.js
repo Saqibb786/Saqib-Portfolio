@@ -28,7 +28,7 @@ hamburger.addEventListener("click", () => {
         navMenu.style.transform = "translateY(0)";
         navMenu.style.display = "flex";
         navMenu.style.zIndex = "9999"; // ensure it's above other overlays
-        navMenu.style.background = "rgba(15, 23, 42, 0.98)";
+        navMenu.style.background = "rgba(11, 17, 32, 0.98)";
         navMenu.style.color = "";
       } else {
         // Collapse: reset to the hidden transition state and clear strong inline overrides after animation
@@ -107,11 +107,11 @@ const updateNavbarTheme = () => {
   if (!navbar) return;
 
   if (window.scrollY > 50) {
-    navbar.style.background = "rgba(15, 23, 42, 0.98)";
-    navbar.style.boxShadow = "0 4px 20px rgba(0, 0, 0, 0.5)";
+    navbar.style.background = "rgba(11, 17, 32, 0.98)";
+    navbar.style.boxShadow = "0 10px 30px rgba(2, 6, 23, 0.6)";
   } else {
-    navbar.style.background = "rgba(15, 23, 42, 0.95)";
-    navbar.style.boxShadow = "0 2px 10px rgba(0, 0, 0, 0.3)";
+    navbar.style.background = "rgba(11, 17, 32, 0.9)";
+    navbar.style.boxShadow = "0 8px 24px rgba(2, 6, 23, 0.45)";
   }
   navbar.style.borderBottom = "none";
   // Reset nav text color to CSS defaults
