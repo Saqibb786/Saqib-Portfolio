@@ -28,14 +28,8 @@ hamburger.addEventListener("click", () => {
         navMenu.style.transform = "translateY(0)";
         navMenu.style.display = "flex";
         navMenu.style.zIndex = "9999"; // ensure it's above other overlays
-        // Match inline background to current theme to avoid invisible text
-        if (document.documentElement.classList.contains("light")) {
-          navMenu.style.background = "#ffffff";
-          navMenu.style.color = "#0f172a";
-        } else {
-          navMenu.style.background = "rgba(15, 23, 42, 0.98)";
-          navMenu.style.color = "";
-        }
+        navMenu.style.background = "rgba(15, 23, 42, 0.98)";
+        navMenu.style.color = "";
       } else {
         // Collapse: reset to the hidden transition state and clear strong inline overrides after animation
         navMenu.style.opacity = "0";
@@ -111,42 +105,23 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
 const updateNavbarTheme = () => {
   const navbar = document.querySelector(".navbar");
   if (!navbar) return;
-  const rootEl = document.documentElement;
-  const isLight = rootEl.classList.contains("light");
 
-  if (isLight) {
-    navbar.style.background = "#fff";
-    navbar.style.boxShadow =
-      window.scrollY > 50
-        ? "0 4px 20px rgba(30,41,59,0.07)"
-        : "0 2px 10px rgba(30,41,59,0.04)";
-    navbar.style.borderBottom = "1px solid #e2e8f0";
-    // Force nav text color for light mode
-    navbar.querySelectorAll(".nav-brand, .nav-menu a").forEach((el) => {
-      el.style.color = "#0f172a";
-      el.style.background = "none";
-      el.style.webkitBackgroundClip = "initial";
-      el.style.webkitTextFillColor = "initial";
-      el.style.backgroundClip = "initial";
-    });
+  if (window.scrollY > 50) {
+    navbar.style.background = "rgba(15, 23, 42, 0.98)";
+    navbar.style.boxShadow = "0 4px 20px rgba(0, 0, 0, 0.5)";
   } else {
-    if (window.scrollY > 50) {
-      navbar.style.background = "rgba(15, 23, 42, 0.98)";
-      navbar.style.boxShadow = "0 4px 20px rgba(0, 0, 0, 0.5)";
-    } else {
-      navbar.style.background = "rgba(15, 23, 42, 0.95)";
-      navbar.style.boxShadow = "0 2px 10px rgba(0, 0, 0, 0.3)";
-    }
-    navbar.style.borderBottom = "none";
-    // Reset nav text color to CSS defaults for dark mode
-    navbar.querySelectorAll(".nav-brand, .nav-menu a").forEach((el) => {
-      el.style.color = "";
-      el.style.background = "";
-      el.style.webkitBackgroundClip = "";
-      el.style.webkitTextFillColor = "";
-      el.style.backgroundClip = "";
-    });
+    navbar.style.background = "rgba(15, 23, 42, 0.95)";
+    navbar.style.boxShadow = "0 2px 10px rgba(0, 0, 0, 0.3)";
   }
+  navbar.style.borderBottom = "none";
+  // Reset nav text color to CSS defaults
+  navbar.querySelectorAll(".nav-brand, .nav-menu a").forEach((el) => {
+    el.style.color = "";
+    el.style.background = "";
+    el.style.webkitBackgroundClip = "";
+    el.style.webkitTextFillColor = "";
+    el.style.backgroundClip = "";
+  });
 };
 
 // Apply on scroll
@@ -281,38 +256,6 @@ console.log(
   "%cGitHub: https://github.com/Saqibb786",
   "font-size: 14px; color: #10b981;"
 );
-
-// Theme toggle with persistence
-const root = document.documentElement;
-const themeToggle = document.querySelector(".theme-toggle");
-const storedTheme = localStorage.getItem("theme");
-if (storedTheme === "light") {
-  root.classList.add("light");
-}
-if (themeToggle) {
-  themeToggle.addEventListener("click", () => {
-    root.classList.toggle("light");
-    const mode = root.classList.contains("light") ? "light" : "dark";
-    localStorage.setItem("theme", mode);
-    themeToggle.innerHTML = root.classList.contains("light")
-      ? '<i class="fas fa-sun"></i>'
-      : '<i class="fas fa-moon"></i>';
-    themeToggle.setAttribute(
-      "aria-pressed",
-      root.classList.contains("light") ? "true" : "false"
-    );
-    // Immediately update navbar theme on toggle (no scroll required)
-    updateNavbarTheme();
-  });
-  // Set correct icon at load
-  themeToggle.innerHTML = root.classList.contains("light")
-    ? '<i class="fas fa-sun"></i>'
-    : '<i class="fas fa-moon"></i>';
-  themeToggle.setAttribute(
-    "aria-pressed",
-    root.classList.contains("light") ? "true" : "false"
-  );
-}
 
 // Ensure navbar reflects theme on initial load
 updateNavbarTheme();

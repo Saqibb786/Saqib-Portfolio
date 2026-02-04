@@ -26,12 +26,6 @@
     border-radius: 2px;
     
 }
-:root.light .footer-col.about h3 {
-    color: #f1f5f9 !important;
-}
-:root.light .footer-col.about p {
-    color: rgb(203, 213, 225) !important;
-}
 html {
     box-sizing: border-box;
 }
@@ -61,48 +55,6 @@ body {
     --gradient: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
     --gradient-hover: linear-gradient(135deg, #1d4ed8 0%, #6d28d9 100%);
     --footer-link-hover: #ffffff;
-}
-
-/* Light theme variable overrides */
-:root.light {
-    --dark-bg: #ffffff;
-    --darker-bg: #f8fafc;
-    --light-text: #0f172a;
-    --gray-text: #334155;
-    --card-bg: #fff;
-    --card-hover: #f1f5f9;
-    --border-color: #cbd5e1;
-    --shadow: 0 4px 20px rgba(2,6,23,0.08);
-    --footer-bg: #1e3240;
-    --footer-card-bg: transparent;
-    --footer-text: #f1f5f9;
-    --footer-link-hover: #ffffff;
-}
-
-/* Light mode: ensure form inputs are visible */
-:root.light .contact-form {
-    background: #ffffff;
-    border-color: #e2e8f0;
-    box-shadow: 0 4px 20px rgba(2,6,23,0.06);
-}
-:root.light .form-field label {
-    color: #0f172a;
-}
-:root.light .form-field input,
-:root.light .form-field textarea {
-    background: #ffffff;
-    color: #0f172a;
-    border: 1px solid #cbd5e1;
-}
-:root.light .form-field input::placeholder,
-:root.light .form-field textarea::placeholder {
-    color: #94a3b8;
-}
-:root.light .form-field input:focus,
-:root.light .form-field textarea:focus {
-    background: #f8fafc;
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37,99,235,0.13);
 }
 
 /* Contact Section Polished */
@@ -163,12 +115,6 @@ body {
     font-weight: 600;
 }
 
-/* Light mode: ensure contact items are not styled as cards */
-:root.light .contact-item {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-}
 .contact-social-btns {
     display: flex;
     gap: 1.2rem;
@@ -435,34 +381,6 @@ body {
     .contact-form {
         transition: background 0.3s, box-shadow 0.3s, border 0.3s;
     }
-    :root.light .skills-grid .skill-category,
-    :root.light .projects-grid .project-card,
-    :root.light .education-item,
-    :root.light .cert-card,
-    :root.light .activity-item,
-    :root.light .contact-form {
-        background: #fff;
-        border: 1px solid var(--border-color);
-        box-shadow: var(--shadow);
-    }
-
-/* Improve card shadow visibility in light mode: some shadows can be subtle on
-   white backgrounds, so provide slightly stronger, specific shadows for
-   projects and certifications while preserving existing hover transforms. */
-:root.light .project-card,
-:root.light .cert-card {
-    box-shadow: 0 8px 30px rgba(2,6,23,0.06);
-}
-
-:root.light .project-card:hover {
-    /* keep existing transform but provide a stronger light-mode shadow */
-    box-shadow: 0 15px 40px rgba(2,6,23,0.10);
-}
-
-:root.light .cert-card:hover {
-    box-shadow: 0 10px 30px rgba(2,6,23,0.10);
-}
-
 /* Footer Modern Layout */
 
 /* Footer Modern Layout - improved for light/dark */
@@ -567,15 +485,6 @@ body {
     letter-spacing: 0.01em;
 }
 
-:root.light .footer {
-    background: var(--footer-bg, #1e3240);
-    color: var(--footer-text, #1e293b);
-}
-:root.light .footer-col {
-    background: var(--footer-card-bg, #fff);
-    box-shadow: 0 2px 12px 0 rgba(30,41,59,0.06);
-}
-
 @media (max-width: 900px) {
     .footer-content {
         flex-direction: column;
@@ -585,14 +494,6 @@ body {
     .footer-col {
         min-width: 0;
     }
-}
-
-:root.light .navbar .nav-brand {
-    background: none;
-    -webkit-background-clip: initial;
-    -webkit-text-fill-color: initial;
-    background-clip: initial;
-    color: #0f172a;
 }
 
 .nav-menu {
@@ -647,7 +548,6 @@ body {
     a,
     button,
     .btn,
-    .theme-toggle,
     .hamburger,
     .nav-menu a,
     .cert-toggle-icon,
@@ -685,45 +585,10 @@ body {
     filter: brightness(0) invert(1);
 }
 
-:root.light .nav-logo {
-    filter: none;
-}
-
 
 
 @media (max-width: 768px) {
     .nav-logo { height: 60px; }
-}
-
-.theme-toggle {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: var(--card-bg);
-    color: var(--light-text);
-    border: 1px solid var(--card-hover);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s;
-    font-size: 1.25rem;
-    padding: 0;
-    position: relative;
-    overflow: hidden;
-}
-.theme-toggle i {
-    font-size: 1.35em;
-    display: block;
-    width: 1em;
-    height: 1em;
-    margin: 0 auto;
-    line-height: 1em;
-    transition: color 0.2s, transform 0.2s;
-    pointer-events: none;
-}
-.theme-toggle:hover {
-    transform: scale(1.25);
 }
 
 /* Hero Section */
@@ -1361,15 +1226,6 @@ section {
     background: linear-gradient(135deg, rgba(37,99,235,0.06), rgba(124,58,237,0.04));
 }
 
-:root.light .cert-toggle-icon {
-    color: var(--primary-color);
-    
-}
-:root.light .cert-toggle-icon:hover {
-    background: var(--primary-color);
-    color: #fff;
-}
-
 /* Projects grid collapsed behavior mirrors certifications grid but ensures
    the parent container can still expand when the grid is uncollapsed. */
 .projects-grid.collapsed {
@@ -1498,10 +1354,6 @@ section {
     width: 2px;
     background: rgba(37, 99, 235, 0.45);
     border-radius: 2px;
-}
-
-:root.light .activity-item::before {
-    background: rgba(37, 99, 235, 0.35);
 }
 
 .activity-org {
@@ -1654,27 +1506,6 @@ section {
         font-size: 1.05rem;
         color: var(--light-text);
         width: 100%;
-    }
-
-    /* Light mode: ensure the mobile nav overlay matches light theme so
-       links remain readable when :root.light is active (fixes invisible links) */
-    :root.light .nav-menu {
-        background: #ffffff; /* match navbar in light theme */
-        color: #0f172a;
-    }
-    /* Force high-specificity link color for mobile nav in light mode */
-    :root.light .nav-menu a {
-        color: #0f172a !important;
-        background: none !important;
-    }
-
-    /* Ensure the active state is visible in light mode even if transitions
-       or other rules delay visibility changes in some environments */
-    :root.light .nav-menu.active {
-        visibility: visible !important;
-        opacity: 1 !important;
-        transform: translateY(0) !important;
-        transition: opacity 200ms ease, transform 200ms ease !important;
     }
 
     .hero-title {
