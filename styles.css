@@ -1469,62 +1469,60 @@ section {
 }
 
 .activities {
-    display: grid;    
-    gap: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
     cursor: default;
-    max-width: 800px;
+    max-width: 760px;
     margin: 0 auto;
 }
 
 .activity-item {
+    position: relative;
+    padding: 0.25rem 0 0.25rem 2.2rem;
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
-    align-items: flex-start;
-    background: var(--card-bg);
-    padding: 1.75rem;
-    border-radius: 12px;
-    border: 1px solid rgba(59, 130, 246, 0.1);
-    transition: all 0.3s;
+    gap: 0.35rem;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
 }
 
-.activity-item:hover {
-    background: var(--card-hover);
-    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+.activity-item::before {
+    content: '';
+    position: absolute;
+    left: 0.55rem;
+    top: 0.35rem;
+    bottom: 0.35rem;
+    width: 2px;
+    background: rgba(37, 99, 235, 0.45);
+    border-radius: 2px;
 }
 
-/* Ensure hover effect also applies in light mode (higher specificity override) */
-:root.light .activity-item:hover {
-    background: var(--card-hover);
-    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+:root.light .activity-item::before {
+    background: rgba(37, 99, 235, 0.35);
 }
 
-.activity-item i {
+.activity-org {
+    color: var(--primary-color);
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+.activity-role {
+    color: var(--light-text);
+    font-weight: 700;
     font-size: 1.5rem;
-    color: var(--accent-color);
-    flex-shrink: 0;
-    margin-top: 0.2rem;
 }
 
-.activity-item p {
+.activity-desc {
     color: var(--gray-text);
     line-height: 1.6;
-}
-
-/* Activity header: icon + title in one row */
-.activity-header {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    margin-bottom: 0.6rem;
-}
-.activity-header i {
-    margin-top: 0;
-}
-.activity-title {
     margin: 0;
     font-size: 1.05rem;
-    color: var(--light-text);
 }
 
 /* Contact Section */
