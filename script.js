@@ -14,7 +14,7 @@ hamburger.addEventListener("click", () => {
       "[nav] hamburger toggle -> expanded:",
       expanded,
       "navMenu classes:",
-      navMenu?.className
+      navMenu?.className,
     );
   } catch (e) {}
 
@@ -246,15 +246,15 @@ if (heroSubtitle) {
 // Console message for developers
 console.log(
   "%c👋 Hello, Developer!",
-  "font-size: 20px; font-weight: bold; color: #3b82f6;"
+  "font-size: 20px; font-weight: bold; color: #3b82f6;",
 );
 console.log(
   "%cInterested in how this portfolio was built? Check out the source code!",
-  "font-size: 14px; color: #94a3b8;"
+  "font-size: 14px; color: #94a3b8;",
 );
 console.log(
   "%cGitHub: https://github.com/Saqibb786",
-  "font-size: 14px; color: #10b981;"
+  "font-size: 14px; color: #10b981;",
 );
 
 // Ensure navbar reflects theme on initial load
@@ -323,7 +323,7 @@ const setStatus = (msg, type = "info") => {
 const sendViaMailto = ({ name, email, subject, message }) => {
   const body = `Name: ${name}\nEmail: ${email}\n\n${message}`;
   const mailto = `mailto:saqibbutt10000@gmail.com?subject=${encodeURIComponent(
-    subject
+    subject,
   )}&body=${encodeURIComponent(body)}`;
   window.location.href = mailto;
 };
@@ -364,7 +364,7 @@ form?.addEventListener("submit", async (e) => {
   if (urlMatches > 3) {
     setStatus(
       "Too many links in the message. Please reduce and try again.",
-      "error"
+      "error",
     );
     return;
   }
@@ -373,7 +373,7 @@ form?.addEventListener("submit", async (e) => {
   if (message.length > 3000 || subject.length > 150 || name.length > 100) {
     setStatus(
       "Your message is too long. Please shorten and try again.",
-      "error"
+      "error",
     );
     return;
   }
@@ -416,9 +416,9 @@ form?.addEventListener("submit", async (e) => {
 
   const canUseEmailJS = Boolean(
     window.emailjs &&
-      EMAILJS_PUBLIC_KEY &&
-      EMAILJS_SERVICE_ID &&
-      EMAILJS_TEMPLATE_ID
+    EMAILJS_PUBLIC_KEY &&
+    EMAILJS_SERVICE_ID &&
+    EMAILJS_TEMPLATE_ID,
   );
   if (!canUseEmailJS) {
     // Fallback to mailto if EmailJS is not configured yet
@@ -435,7 +435,7 @@ form?.addEventListener("submit", async (e) => {
     console.error("EmailJS error:", err);
     setStatus(
       "Couldn’t send via email service. Opening your email client…",
-      "error"
+      "error",
     );
     sendViaMailto({ name, email, subject, message });
   } finally {
@@ -455,7 +455,7 @@ const certToggle = document.getElementById("cert-toggle");
 function computeGridRows() {
   if (!certsGrid) return 0;
   const children = Array.from(certsGrid.children).filter(
-    (c) => c.classList && c.classList.contains("cert-card")
+    (c) => c.classList && c.classList.contains("cert-card"),
   );
   if (children.length === 0) return 0;
 
@@ -475,7 +475,7 @@ function setCollapsedHeightForRows(rows) {
   // and measuring the bottom of the last visible row. This prevents partial
   // reveals when cards vary in height or gaps change across breakpoints.
   const children = Array.from(certsGrid.children).filter(
-    (c) => c.classList && c.classList.contains("cert-card")
+    (c) => c.classList && c.classList.contains("cert-card"),
   );
   if (children.length === 0) return 0;
 
@@ -523,6 +523,7 @@ function updateCertToggle() {
   const rows = computeGridRows();
   // Responsive threshold: on large screens (>=1024px) collapse after 2 rows, else after 3 rows
   const threshold = window.innerWidth >= 1024 ? 2 : 3;
+  const isExpanded = certToggle.getAttribute("aria-expanded") === "true";
   if (rows > threshold) {
     // show toggle and set collapsed height
     // move the existing button into place right after the grid (in case it
@@ -532,18 +533,28 @@ function updateCertToggle() {
     }
     certToggle.classList.add("cert-toggle-icon");
     certToggle.style.display = "inline-flex";
-    certToggle.innerHTML =
-      '<i class="fas fa-chevron-down" aria-hidden="true"></i>';
-    certToggle.setAttribute("aria-expanded", "false");
-    certToggle.setAttribute("aria-label", "Show more certifications");
-    certsGrid.classList.add("collapsed");
-    setCollapsedHeightForRows(threshold);
+    if (isExpanded) {
+      certToggle.innerHTML =
+        '<i class="fas fa-chevron-up" aria-hidden="true"></i>';
+      certToggle.setAttribute("aria-expanded", "true");
+      certToggle.setAttribute("aria-label", "Show fewer certifications");
+      certsGrid.classList.remove("collapsed");
+      removeCollapsedHeight();
+    } else {
+      certToggle.innerHTML =
+        '<i class="fas fa-chevron-down" aria-hidden="true"></i>';
+      certToggle.setAttribute("aria-expanded", "false");
+      certToggle.setAttribute("aria-label", "Show more certifications");
+      certsGrid.classList.add("collapsed");
+      setCollapsedHeightForRows(threshold);
+    }
   } else {
     // hide/move back to original wrapper if present
     certToggle.style.display = "none";
     certToggle.classList.remove("cert-toggle-icon");
     certsGrid.classList.remove("collapsed");
     removeCollapsedHeight();
+    certToggle.setAttribute("aria-expanded", "false");
   }
 }
 
@@ -589,7 +600,7 @@ const projectsToggle = document.getElementById("projects-toggle");
 function computeProjectRows() {
   if (!projectsGrid) return 0;
   const children = Array.from(projectsGrid.children).filter(
-    (c) => c.classList && c.classList.contains("project-card")
+    (c) => c.classList && c.classList.contains("project-card"),
   );
   if (children.length === 0) return 0;
   const firstTop = children[0].getBoundingClientRect().top;
@@ -605,7 +616,7 @@ function computeProjectRows() {
 function setProjectsCollapsedHeightForRows(rows) {
   if (!projectsGrid) return 0;
   const children = Array.from(projectsGrid.children).filter(
-    (c) => c.classList && c.classList.contains("project-card")
+    (c) => c.classList && c.classList.contains("project-card"),
   );
   if (children.length === 0) return 0;
 
@@ -661,26 +672,37 @@ function updateProjectsToggle() {
   // Responsive threshold: on small screens (<1024px) show toggle after 3 rows,
   // on large screens (>=1024px) show toggle after 1 row (only one row visible initially).
   const threshold = window.innerWidth < 1024 ? 3 : 1;
+  const isExpanded = projectsToggle.getAttribute("aria-expanded") === "true";
   if (rows > threshold) {
     if (projectsToggle.parentNode !== projectsGrid.parentNode) {
       projectsGrid.parentNode.insertBefore(
         projectsToggle,
-        projectsGrid.nextSibling
+        projectsGrid.nextSibling,
       );
     }
     projectsToggle.classList.add("cert-toggle-icon");
     projectsToggle.style.display = "inline-flex";
-    projectsToggle.innerHTML =
-      '<i class="fas fa-chevron-down" aria-hidden="true"></i>';
-    projectsToggle.setAttribute("aria-expanded", "false");
-    projectsToggle.setAttribute("aria-label", "Show more projects");
-    projectsGrid.classList.add("collapsed");
-    setProjectsCollapsedHeightForRows(threshold);
+    if (isExpanded) {
+      projectsToggle.innerHTML =
+        '<i class="fas fa-chevron-up" aria-hidden="true"></i>';
+      projectsToggle.setAttribute("aria-expanded", "true");
+      projectsToggle.setAttribute("aria-label", "Show fewer projects");
+      projectsGrid.classList.remove("collapsed");
+      removeProjectsCollapsedHeight();
+    } else {
+      projectsToggle.innerHTML =
+        '<i class="fas fa-chevron-down" aria-hidden="true"></i>';
+      projectsToggle.setAttribute("aria-expanded", "false");
+      projectsToggle.setAttribute("aria-label", "Show more projects");
+      projectsGrid.classList.add("collapsed");
+      setProjectsCollapsedHeightForRows(threshold);
+    }
   } else {
     projectsToggle.style.display = "none";
     projectsToggle.classList.remove("cert-toggle-icon");
     projectsGrid.classList.remove("collapsed");
     removeProjectsCollapsedHeight();
+    projectsToggle.setAttribute("aria-expanded", "false");
   }
 }
 
