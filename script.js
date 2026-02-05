@@ -141,7 +141,9 @@ const updateNavbarTheme = () => {
 };
 
 // Apply on scroll with throttle for better mobile performance
-window.addEventListener("scroll", throttle(updateNavbarTheme, 50));
+window.addEventListener("scroll", throttle(updateNavbarTheme, 50), {
+  passive: true,
+});
 
 // Intersection Observer for fade-in animations with stagger
 // Increased threshold and adjusted rootMargin for stable mobile scrolling
@@ -251,6 +253,7 @@ window.addEventListener(
       }
     });
   }, 100),
+  { passive: true },
 );
 
 // Typing effect for hero subtitle (optional enhancement)
@@ -289,6 +292,24 @@ console.log(
 // Ensure navbar reflects theme on initial load
 updateNavbarTheme();
 
+// Optimize scroll performance: disable transitions during active scrolling on mobile
+let scrollTimer = null;
+if (window.innerWidth <= 768) {
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (!document.body.classList.contains("disable-hover")) {
+        document.body.classList.add("disable-hover");
+      }
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(() => {
+        document.body.classList.remove("disable-hover");
+      }, 150);
+    },
+    { passive: true },
+  );
+}
+
 // If viewport grows past mobile breakpoint, ensure nav menu is reset
 window.addEventListener("resize", () => {
   try {
@@ -315,6 +336,7 @@ window.addEventListener(
     if (window.scrollY > 400) backToTop?.classList.add("show");
     else backToTop?.classList.remove("show");
   }, 100),
+  { passive: true },
 );
 backToTop?.addEventListener("click", () => {
   window.scrollTo({ top: 0, behavior: "smooth" });

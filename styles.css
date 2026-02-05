@@ -1942,9 +1942,11 @@ section {
 }
 
 @media (max-width: 768px) {
-    /* Disable fixed background on mobile to prevent scroll jank */
+    /* Disable fixed background and simplify gradients on mobile to prevent scroll jank */
     body {
         background-attachment: scroll;
+        /* Simplified static gradient for better mobile performance */
+        background: linear-gradient(180deg, #0a0f1e 0%, #0f172a 50%, #0a0f1e 100%);
     }
     .hero {
         padding: 100px 18px 60px;
@@ -2089,6 +2091,23 @@ section {
     .form-row {
         grid-template-columns: 1fr;
     }
+    
+    /* CRITICAL: Disable infinite animations on mobile to prevent scroll jank */
+    .hero::before {
+        animation: none !important;
+        transform: translate(0, 0) scale(1);
+    }
+    
+    .highlight,
+    .hero-subtitle.highlight {
+        animation: none !important;
+        background-position: 0% 50%;
+    }
+    
+    .btn-primary {
+        animation: none !important;
+        background-position: 0% 50%;
+    }
 }
 
 @media (max-width: 480px) {
@@ -2155,4 +2174,11 @@ section {
         opacity: 1 !important;
         transform: none !important;
     }
+}
+
+/* Disable hover effects and minimize transitions during active scrolling for smooth mobile performance */
+body.disable-hover * {
+    pointer-events: none !important;
+    transition-duration: 0s !important;
+    animation-play-state: paused !important;
 }
