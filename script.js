@@ -256,9 +256,9 @@ window.addEventListener(
   { passive: true },
 );
 
-// Typing effect for hero subtitle (optional enhancement) - disabled on mobile for reliability
+// Typing effect for hero subtitle (optional enhancement)
 const heroSubtitle = document.querySelector(".hero-subtitle");
-if (heroSubtitle && window.innerWidth > 768) {
+if (heroSubtitle) {
   const text = heroSubtitle.textContent;
   heroSubtitle.textContent = "";
   let i = 0;
