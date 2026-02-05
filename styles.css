@@ -1697,6 +1697,16 @@ section {
         gap: 1rem;
     }
 
+    /* Hide education card icons on small screens to avoid text shifting */
+    .edu-icon {
+        display: none !important;
+    }
+
+    .edu-header {
+        gap: 0;
+        align-items: flex-start;
+    }
+
     .contact-social {
         flex-direction: column;
     }
