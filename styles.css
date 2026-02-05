@@ -1086,6 +1086,8 @@ section {
     position: relative;
     overflow: hidden;
     box-shadow: var(--shadow-soft);
+    display: flex;
+    flex-direction: column;
 }
 
 .project-card::before {
@@ -1114,7 +1116,7 @@ section {
     display: flex;
     align-items: center;
     gap: 1rem;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.4rem;
 }
 
 .project-icon {
@@ -1133,34 +1135,37 @@ section {
 
 .project-status {
     display: inline-block;
-    padding: 0.2rem 0.6rem;
-    border-radius: 999px;
+    padding: 0;
+    border-radius: 0;
     font-weight: 600;
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.35rem;
     font-size: 0.75rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: #cfe1ff;
-    background: rgba(37, 99, 235, 0.12);
-    border: 1px solid rgba(37, 99, 235, 0.28);
+    background: transparent;
+    border: none;
     box-shadow: none;
 }
 
+.project-status.completed,
 .project-status.ongoing {
-    background: rgba(6, 182, 212, 0.12);
-    border-color: rgba(6, 182, 212, 0.4);
-    color: #c9f3ff;
+    line-height: 1.1;
+}
+
+.project-status.ongoing {
+    color: #60a5fa;
 }
 
 .project-status.completed {
     background: transparent;
     border-color: transparent;
-    color: #a7f3d0;
+    color: #ffffff;
 }
 
 .project-card p {
     color: var(--gray-text);
-    margin-bottom: 0.45rem;
+    margin-bottom: 0.55rem;
     line-height: 1.6;
 }
 
@@ -1177,14 +1182,15 @@ section {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    margin-top: 0.35rem;
+    margin-top: 0;
+    margin-bottom: 0.75rem;
 }
 
 .project-tags span {
     background: rgba(37, 99, 235, 0.15);
-    padding: 0.4rem 0.8rem;
-    border-radius: 999px;
-    font-size: 0.85rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
     color: #cfe1ff;
     border: 1px solid rgba(37, 99, 235, 0.4);
 }
@@ -1193,7 +1199,12 @@ section {
 }
 
 .project-actions {
-    margin-top: 0.85rem;
+    margin-top: auto;
+    padding-top: 0.9rem;
+}
+
+.project-card > :last-child {
+    margin-bottom: 0;
 }
 
 .project-actions .btn {
@@ -1431,15 +1442,23 @@ section {
 
 .cert-card h4 {
     font-size: 1.1rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.15rem;
     color: var(--light-text);
 }
 
 .cert-card p {
     color: var(--gray-text);
     font-size: 0.9rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.2rem;
     overflow-wrap: anywhere; /* wrap long words/URLs to avoid overflow */
+}
+
+/* Provider line (e.g., IBM (Coursera)) */
+.cert-card > p:first-of-type {
+    color: #c7d2fe;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    margin-bottom: 0.15rem;
 }
 
 /* Cert header: icon + title side-by-side */
@@ -1447,7 +1466,7 @@ section {
     display: flex;
     align-items: center;
     gap: 0.6rem;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.2rem;
 }
 .cert-card .cert-header i {
     display: none;
@@ -1472,6 +1491,26 @@ section {
 .cert-description {
     font-size: 0.85rem !important;
     line-height: 1.5;
+}
+
+.cert-card .cert-date {
+    margin-bottom: 0.2rem;
+    position: relative;
+    padding-bottom: 0.45rem;
+}
+
+.cert-card .cert-date::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0.1rem;
+    height: 1px;
+    background: rgba(148, 163, 184, 0.25);
+}
+
+.cert-card .cert-description {
+    margin-top: 0.6rem;
 }
 
 .activities {
