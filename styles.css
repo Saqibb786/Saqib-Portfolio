@@ -2030,6 +2030,12 @@ section {
         font-size: 2.8rem;
         margin-bottom: 1rem;
     }
+    
+    /* Ensure all hero content is visible on mobile */
+    .hero-content > * {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+    }
 
     .hero-description {
         font-size: 1.05rem;
@@ -2098,8 +2104,16 @@ section {
         transform: translate(0, 0) scale(1);
     }
     
-    .highlight,
+    /* Keep entrance animation but disable infinite gradient animation */
     .hero-subtitle.highlight {
+        animation: heroSlideDown 1300ms cubic-bezier(0.22, 1, 0.36, 1) 360ms 1 forwards !important;
+        /* Static gradient position, no animation */
+        background-position: 0% 50%;
+        /* Ensure visibility as fallback */
+        opacity: 1;
+    }
+    
+    .highlight {
         animation: none !important;
         background-position: 0% 50%;
     }
