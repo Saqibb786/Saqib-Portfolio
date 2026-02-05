@@ -674,8 +674,36 @@ h4,
     text-align: center;
     z-index: 1;
     position: relative;
-    animation: fadeInUp 1s ease-out;
     max-width: 820px;
+}
+
+/* Hero content premium staggered entrance */
+.hero-content > * {
+    opacity: 0;
+    animation-duration: 1300ms;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    animation-fill-mode: forwards;
+    animation-name: heroSlideDown;
+}
+
+.hero-title {
+    animation-delay: 140ms;
+}
+
+.hero-subtitle {
+    animation-delay: 360ms;
+}
+
+.hero-description {
+    animation-delay: 560ms;
+}
+
+.hero-buttons {
+    animation-delay: 760ms;
+}
+
+.social-links {
+    animation-delay: 960ms;
 }
 
 .hero-title {
@@ -694,6 +722,16 @@ h4,
     background-clip: text;
     background-size: 200% 200%;
     animation: gradientShift 8s ease infinite;
+}
+
+/* Combine entrance + gradient animation for the name so it doesn't get hidden */
+.hero-subtitle.highlight {
+    animation-name: heroSlideDown, gradientShift;
+    animation-duration: 1300ms, 8000ms;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1), ease;
+    animation-delay: 360ms, 0ms;
+    animation-iteration-count: 1, infinite;
+    animation-fill-mode: forwards, forwards;
 }
 
 .hero-subtitle {
@@ -1516,6 +1554,39 @@ section {
     }
 }
 
+@keyframes heroSlideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-18px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes heroSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes heroFadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 @keyframes gradientShift {
     0% {
         background-position: 0% 50%;
@@ -1760,5 +1831,10 @@ section {
         animation: none !important;
         transition: none !important;
         scroll-behavior: auto !important;
+    }
+
+    .hero-content > * {
+        opacity: 1 !important;
+        transform: none !important;
     }
 }
