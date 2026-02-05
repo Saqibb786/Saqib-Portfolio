@@ -107,13 +107,16 @@ const updateNavbarTheme = () => {
   if (!navbar) return;
 
   if (window.scrollY > 50) {
-    navbar.style.background = "rgba(11, 17, 32, 0.98)";
-    navbar.style.boxShadow = "0 10px 30px rgba(2, 6, 23, 0.6)";
+    navbar.style.background = "rgba(10, 15, 30, 0.85)";
+    navbar.style.boxShadow =
+      "0 12px 40px rgba(0, 0, 0, 0.4), 0 1px 0 rgba(255, 255, 255, 0.08) inset";
+    navbar.style.borderBottom = "1px solid rgba(59, 130, 246, 0.3)";
   } else {
-    navbar.style.background = "rgba(11, 17, 32, 0.9)";
-    navbar.style.boxShadow = "0 8px 24px rgba(2, 6, 23, 0.45)";
+    navbar.style.background = "rgba(10, 15, 30, 0.75)";
+    navbar.style.boxShadow =
+      "0 8px 32px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.05) inset";
+    navbar.style.borderBottom = "1px solid rgba(59, 130, 246, 0.2)";
   }
-  navbar.style.borderBottom = "none";
   // Reset nav text color to CSS defaults
   navbar.querySelectorAll(".nav-brand, .nav-menu a").forEach((el) => {
     el.style.color = "";
@@ -127,10 +130,10 @@ const updateNavbarTheme = () => {
 // Apply on scroll
 window.addEventListener("scroll", updateNavbarTheme);
 
-// Intersection Observer for fade-in animations
+// Intersection Observer for fade-in animations with stagger
 const observerOptions = {
-  threshold: 0.1,
-  rootMargin: "0px 0px -50px 0px",
+  threshold: 0.08,
+  rootMargin: "0px 0px -80px 0px",
 };
 
 const observer = new IntersectionObserver((entries) => {
@@ -145,8 +148,9 @@ const observer = new IntersectionObserver((entries) => {
 // Observe all sections for animation
 document.querySelectorAll("section").forEach((section) => {
   section.style.opacity = "0";
-  section.style.transform = "translateY(20px)";
-  section.style.transition = "opacity 0.6s ease-out, transform 0.6s ease-out";
+  section.style.transform = "translateY(30px)";
+  section.style.transition =
+    "opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)";
   observer.observe(section);
 });
 
@@ -159,7 +163,7 @@ const skillObserver = new IntersectionObserver((entries) => {
         setTimeout(() => {
           tag.style.opacity = "1";
           tag.style.transform = "translateY(0)";
-        }, index * 50);
+        }, index * 60);
       });
     }
   });
@@ -170,7 +174,8 @@ document.querySelectorAll(".skill-category").forEach((category) => {
   tags.forEach((tag) => {
     tag.style.opacity = "0";
     tag.style.transform = "translateY(10px)";
-    tag.style.transition = "opacity 0.3s ease-out, transform 0.3s ease-out";
+    tag.style.transition =
+      "opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)";
   });
   skillObserver.observe(category);
 });
@@ -184,7 +189,7 @@ const projectObserver = new IntersectionObserver((entries) => {
         setTimeout(() => {
           card.style.opacity = "1";
           card.style.transform = "translateY(0)";
-        }, index * 100);
+        }, index * 120);
       });
     }
   });
@@ -195,8 +200,9 @@ if (projectsGrid) {
   const cards = projectsGrid.querySelectorAll(".project-card");
   cards.forEach((card) => {
     card.style.opacity = "0";
-    card.style.transform = "translateY(30px)";
-    card.style.transition = "opacity 0.5s ease-out, transform 0.5s ease-out";
+    card.style.transform = "translateY(40px)";
+    card.style.transition =
+      "opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)";
   });
   projectObserver.observe(projectsGrid);
 }
