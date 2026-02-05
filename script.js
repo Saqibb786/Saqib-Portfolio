@@ -102,6 +102,19 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
   });
 });
 
+// Throttle function for scroll events to improve mobile performance
+function throttle(func, delay) {
+  let lastCall = 0;
+  return function (...args) {
+    const now = new Date().getTime();
+    if (now - lastCall < delay) {
+      return;
+    }
+    lastCall = now;
+    return func(...args);
+  };
+}
+
 const updateNavbarTheme = () => {
   const navbar = document.querySelector(".navbar");
   if (!navbar) return;
@@ -127,13 +140,14 @@ const updateNavbarTheme = () => {
   });
 };
 
-// Apply on scroll
-window.addEventListener("scroll", updateNavbarTheme);
+// Apply on scroll with throttle for better mobile performance
+window.addEventListener("scroll", throttle(updateNavbarTheme, 50));
 
 // Intersection Observer for fade-in animations with stagger
+// Increased threshold and adjusted rootMargin for stable mobile scrolling
 const observerOptions = {
-  threshold: 0.08,
-  rootMargin: "0px 0px -80px 0px",
+  threshold: 0.15,
+  rootMargin: "0px 0px -50px 0px",
 };
 
 const observer = new IntersectionObserver((entries) => {
@@ -193,10 +207,10 @@ const projectObserver = new IntersectionObserver((entries) => {
         setTimeout(() => {
           card.style.opacity = "1";
           card.style.transform = "translateY(0)";
-          // Unobserve after animation to prevent re-triggering
-          projectObserver.unobserve(entry.target);
         }, index * 120);
       });
+      // Unobserve after animation to prevent re-triggering
+      projectObserver.unobserve(entry.target);
     }
   });
 }, observerOptions);
@@ -213,28 +227,31 @@ if (projectsGrid) {
   projectObserver.observe(projectsGrid);
 }
 
-// Add active state to navigation based on scroll position
-window.addEventListener("scroll", () => {
-  let current = "";
-  const sections = document.querySelectorAll("section");
+// Add active state to navigation based on scroll position with throttle
+window.addEventListener(
+  "scroll",
+  throttle(() => {
+    let current = "";
+    const sections = document.querySelectorAll("section");
 
-  sections.forEach((section) => {
-    const sectionTop = section.offsetTop;
-    const sectionHeight = section.clientHeight;
-    if (window.pageYOffset >= sectionTop - 100) {
-      current = section.getAttribute("id");
-    }
-  });
+    sections.forEach((section) => {
+      const sectionTop = section.offsetTop;
+      const sectionHeight = section.clientHeight;
+      if (window.pageYOffset >= sectionTop - 100) {
+        current = section.getAttribute("id");
+      }
+    });
 
-  document.querySelectorAll(".nav-menu a").forEach((link) => {
-    link.classList.remove("active");
-    link.removeAttribute("aria-current");
-    if (link.getAttribute("href") === `#${current}`) {
-      link.classList.add("active");
-      link.setAttribute("aria-current", "page");
-    }
-  });
-});
+    document.querySelectorAll(".nav-menu a").forEach((link) => {
+      link.classList.remove("active");
+      link.removeAttribute("aria-current");
+      if (link.getAttribute("href") === `#${current}`) {
+        link.classList.add("active");
+        link.setAttribute("aria-current", "page");
+      }
+    });
+  }, 100),
+);
 
 // Typing effect for hero subtitle (optional enhancement)
 const heroSubtitle = document.querySelector(".hero-subtitle");
@@ -290,12 +307,15 @@ window.addEventListener("resize", () => {
   } catch {}
 });
 
-// Back to top
+// Back to top with throttled scroll listener
 const backToTop = document.getElementById("backToTop");
-window.addEventListener("scroll", () => {
-  if (window.scrollY > 400) backToTop?.classList.add("show");
-  else backToTop?.classList.remove("show");
-});
+window.addEventListener(
+  "scroll",
+  throttle(() => {
+    if (window.scrollY > 400) backToTop?.classList.add("show");
+    else backToTop?.classList.remove("show");
+  }, 100),
+);
 backToTop?.addEventListener("click", () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 });

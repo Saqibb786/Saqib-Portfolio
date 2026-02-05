@@ -29,6 +29,9 @@
 }
 html {
     box-sizing: border-box;
+    /* Smooth scrolling optimizations for mobile */
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
 }
 *, *::before, *::after {
     box-sizing: inherit;
@@ -36,6 +39,10 @@ html {
 body {
     margin: 0;
     padding: 0;
+    /* Prevent scroll jank on mobile */
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    overscroll-behavior-y: none;
 }
 
 
@@ -450,6 +457,11 @@ h4,
     .contact-item,
     .contact-form {
         transition: background 0.3s, box-shadow 0.3s, border 0.3s;
+        /* Hardware acceleration for smooth animations */
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
     }
 /* Footer Modern Layout */
 
@@ -991,6 +1003,14 @@ h4,
 section {
     padding: clamp(80px, 10vw, 120px) 20px;
     position: relative;
+    /* Hardware acceleration for smooth mobile scrolling */
+    will-change: auto;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    /* Improve paint and layout performance */
+    contain: layout style paint;
 }
 
 /* Alternating section backgrounds for visual hierarchy */
@@ -1922,6 +1942,10 @@ section {
 }
 
 @media (max-width: 768px) {
+    /* Disable fixed background on mobile to prevent scroll jank */
+    body {
+        background-attachment: scroll;
+    }
     .hero {
         padding: 100px 18px 60px;
     }
