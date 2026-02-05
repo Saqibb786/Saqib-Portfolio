@@ -1948,6 +1948,14 @@ section {
         /* Simplified static gradient for better mobile performance */
         background: linear-gradient(180deg, #0a0f1e 0%, #0f172a 50%, #0a0f1e 100%);
     }
+    /* Avoid forced layers/containment that can cause mobile scroll jitter */
+    section {
+        transform: none;
+        -webkit-transform: none;
+        backface-visibility: visible;
+        -webkit-backface-visibility: visible;
+        contain: none;
+    }
     .hero {
         padding: 100px 18px 60px;
     }
@@ -2199,7 +2207,5 @@ section {
 
 /* Disable hover effects and minimize transitions during active scrolling for smooth mobile performance */
 body.disable-hover * {
-    pointer-events: none !important;
     transition-duration: 0s !important;
-    animation-play-state: paused !important;
 }

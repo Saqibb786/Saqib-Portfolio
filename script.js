@@ -145,88 +145,111 @@ window.addEventListener("scroll", throttle(updateNavbarTheme, 50), {
   passive: true,
 });
 
-// Intersection Observer for fade-in animations with stagger
-// Increased threshold and adjusted rootMargin for stable mobile scrolling
-const observerOptions = {
-  threshold: 0.15,
-  rootMargin: "0px 0px -50px 0px",
-};
+const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      entry.target.style.opacity = "1";
-      entry.target.style.transform = "translateY(0)";
-      // Unobserve after animation to prevent re-triggering
-      observer.unobserve(entry.target);
-    }
+if (!isMobile) {
+  // Intersection Observer for fade-in animations with stagger
+  // Increased threshold and adjusted rootMargin for stable mobile scrolling
+  const observerOptions = {
+    threshold: 0.15,
+    rootMargin: "0px 0px -50px 0px",
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = "1";
+        entry.target.style.transform = "translateY(0)";
+        // Unobserve after animation to prevent re-triggering
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  // Observe all sections for animation
+  document.querySelectorAll("section").forEach((section) => {
+    section.style.opacity = "0";
+    section.style.transform = "translateY(30px)";
+    section.style.transition =
+      "opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)";
+    observer.observe(section);
   });
-}, observerOptions);
 
-// Observe all sections for animation
-document.querySelectorAll("section").forEach((section) => {
-  section.style.opacity = "0";
-  section.style.transform = "translateY(30px)";
-  section.style.transition =
-    "opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)";
-  observer.observe(section);
-});
+  // Animate skill tags on scroll
+  const skillObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const tags = entry.target.querySelectorAll(".skill-tag");
+        tags.forEach((tag, index) => {
+          setTimeout(() => {
+            tag.style.opacity = "1";
+            tag.style.transform = "translateY(0)";
+          }, index * 60);
+        });
+        // Unobserve after animation to prevent re-triggering
+        skillObserver.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
 
-// Animate skill tags on scroll
-const skillObserver = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      const tags = entry.target.querySelectorAll(".skill-tag");
-      tags.forEach((tag, index) => {
-        setTimeout(() => {
-          tag.style.opacity = "1";
-          tag.style.transform = "translateY(0)";
-        }, index * 60);
-      });
-      // Unobserve after animation to prevent re-triggering
-      skillObserver.unobserve(entry.target);
-    }
+  document.querySelectorAll(".skill-category").forEach((category) => {
+    const tags = category.querySelectorAll(".skill-tag");
+    tags.forEach((tag) => {
+      tag.style.opacity = "0";
+      tag.style.transform = "translateY(10px)";
+      tag.style.transition =
+        "opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)";
+    });
+    skillObserver.observe(category);
   });
-}, observerOptions);
 
-document.querySelectorAll(".skill-category").forEach((category) => {
-  const tags = category.querySelectorAll(".skill-tag");
-  tags.forEach((tag) => {
-    tag.style.opacity = "0";
-    tag.style.transform = "translateY(10px)";
-    tag.style.transition =
-      "opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)";
-  });
-  skillObserver.observe(category);
-});
+  // Animate project cards
+  const projectObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const cards = entry.target.querySelectorAll(".project-card");
+        cards.forEach((card, index) => {
+          setTimeout(() => {
+            card.style.opacity = "1";
+            card.style.transform = "translateY(0)";
+          }, index * 120);
+        });
+        // Unobserve after animation to prevent re-triggering
+        projectObserver.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
 
-// Animate project cards
-const projectObserver = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      const cards = entry.target.querySelectorAll(".project-card");
-      cards.forEach((card, index) => {
-        setTimeout(() => {
-          card.style.opacity = "1";
-          card.style.transform = "translateY(0)";
-        }, index * 120);
-      });
-      // Unobserve after animation to prevent re-triggering
-      projectObserver.unobserve(entry.target);
-    }
+  const projectsGrid = document.querySelector(".projects-grid");
+  if (projectsGrid) {
+    const cards = projectsGrid.querySelectorAll(".project-card");
+    cards.forEach((card) => {
+      card.style.opacity = "0";
+      card.style.transform = "translateY(40px)";
+      card.style.transition =
+        "opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)";
+    });
+    projectObserver.observe(projectsGrid);
+  }
+} else {
+  // On mobile, avoid scroll-triggered opacity transforms that can flicker
+  document.querySelectorAll("section").forEach((section) => {
+    section.style.opacity = "1";
+    section.style.transform = "none";
+    section.style.transition = "none";
   });
-}, observerOptions);
 
-const projectsGrid = document.querySelector(".projects-grid");
-if (projectsGrid) {
-  const cards = projectsGrid.querySelectorAll(".project-card");
-  cards.forEach((card) => {
-    card.style.opacity = "0";
-    card.style.transform = "translateY(40px)";
-    card.style.transition =
-      "opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)";
+  document.querySelectorAll(".skill-tag").forEach((tag) => {
+    tag.style.opacity = "1";
+    tag.style.transform = "none";
+    tag.style.transition = "none";
   });
-  projectObserver.observe(projectsGrid);
+
+  document.querySelectorAll(".project-card").forEach((card) => {
+    card.style.opacity = "1";
+    card.style.transform = "none";
+    card.style.transition = "none";
+  });
 }
 
 // Add active state to navigation based on scroll position with throttle
