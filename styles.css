@@ -1956,6 +1956,30 @@ section {
         -webkit-backface-visibility: visible;
         contain: none;
     }
+    /* Reduce expensive effects in Projects and Skills on mobile */
+    .skill-category,
+    .project-card,
+    .skill-tag,
+    .project-tags span {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        transform: none;
+        transition: none;
+    }
+    .skill-category::before,
+    .project-card::before,
+    .project-card::after {
+        transition: none;
+        transform: none;
+        opacity: 0;
+    }
+    .skill-category:hover,
+    .project-card:hover,
+    .skill-tag:hover,
+    .project-tags span:hover {
+        transform: none;
+        box-shadow: var(--shadow-soft);
+    }
     .hero {
         padding: 100px 18px 60px;
     }
