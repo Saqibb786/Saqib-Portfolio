@@ -141,6 +141,8 @@ const observer = new IntersectionObserver((entries) => {
     if (entry.isIntersecting) {
       entry.target.style.opacity = "1";
       entry.target.style.transform = "translateY(0)";
+      // Unobserve after animation to prevent re-triggering
+      observer.unobserve(entry.target);
     }
   });
 }, observerOptions);
@@ -165,6 +167,8 @@ const skillObserver = new IntersectionObserver((entries) => {
           tag.style.transform = "translateY(0)";
         }, index * 60);
       });
+      // Unobserve after animation to prevent re-triggering
+      skillObserver.unobserve(entry.target);
     }
   });
 }, observerOptions);
@@ -189,6 +193,8 @@ const projectObserver = new IntersectionObserver((entries) => {
         setTimeout(() => {
           card.style.opacity = "1";
           card.style.transform = "translateY(0)";
+          // Unobserve after animation to prevent re-triggering
+          projectObserver.unobserve(entry.target);
         }, index * 120);
       });
     }
